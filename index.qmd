@@ -1,0 +1,22 @@
+---
+title: "Índice"
+author:
+  - "Diego Betancourt Peralta"
+  - "Brenda Poulette Torres Vargas"
+  - "José Omar Gutiérrez Gutiérrez"
+  - "Erick Iván Canul Hernández"
+  - "Maximiliano Hernández Pérez"
+format:
+  html:
+    toc: true
+    toc-depth: 5
+    toc-expand: true
+    toc-location: left
+    number-sections: false
+    df-print: paged
+execute:
+  message: false
+  warning: false
+---
+
+

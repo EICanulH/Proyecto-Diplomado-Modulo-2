@@ -1,0 +1,17 @@
+/*-- scss:defaults --*/
+
+/* Inline code inside text (including headers) */
+$code-bg: #f3f5f6;   // dark gray background
+
+$font-family-sans-serif: sans-serif;
+
+.cell-output pre {
+  // background-color: #222222;   /* the same as the main background */
+  border: 1px solid #91919142; /* thin semi-transparent white border */
+  border-radius: 0.4em;
+  padding: 0.6em 0.9em;
+  // color: #dee2e6;              /* light gray text for readability */
+  margin-bottom: 1em;
+  // font-family: "Fira Mono", monospace;
+  // font-size: 0.9em;
+}

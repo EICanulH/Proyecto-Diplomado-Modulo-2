@@ -1,0 +1,526 @@
+---
+title: "Segunda parte - Python: API APOD de la NASA"
+author:
+  - "Diego Betancourt Peralta"
+  - "Brenda Poulette Torres Vargas"
+  - "José Omar Gutiérrez Gutiérrez"
+  - "Erick Iván Canul Hernández"
+  - "Maximiliano Hernández Pérez"
+format: html
+---
+
+```{r}
+#| echo: false
+#| include: false
+library(reticulate)
+nombre_env = "diplomadov2"
+use_condaenv(nombre_env)
+
+# Environments que no sean de conda:
+# use_python(nombre_env)
+# use_virtualenv(nombre_env)
+
+repl_python()
+```
+
+# Instrucciones
+
++ Usarán la API de la NASA llamada APOD (Astronomy Picture of the Day). Busca su documentación en https://api.nasa.gov/
++ Genera una API key en el sitio https://api.nasa.gov/
++ Cada miembro del equipo debe seleccionar la palabra correspondiente al número de la primera letra de tu apellido paterno. Por ejemplo, 1 = A, 2 = B, 3 = C, etc. Si tu apellido empieza con Ñ, selecciona la última palabra de la lista. Si la palabra coincide con la de algunos miembro de tu equipo, toma la inmediata posterior.
+
+1. gravitational
+2. retrograde
+3. supernova
+4. spiral
+5. James Webb
+6. emission
+7. nebula
+8. planetary
+9. Juno
+10. X-ray
+11. black hole
+12. infrared
+13. dust clouds
+14. aurora borealis
+15. Northern Lights
+16. geomagnetic storm
+17. Perseids
+18. Geminids
+19. Einstein
+20. elliptical
+21. Newton
+22. Spitzer
+23. Kepler
+24. Apollo
+25. Voyager
+26. Redshift
+27. Hand of God
+28. Hydrogen
+29. alpha
+30. Sulfur
+
++ **Cuidado:** La API se puede sentir "atacada" y bloquearte si haces muchas solicitudes rápidamente.
++ **Cuidado:** La API sólo permite un número finito de solicitudes.
+
+Basándose en solicitudes de la API en el campo "explanation" haz búsquedas basadas en tu palabra y responde la siguientes preguntas:
+
+**Preguntas del equipo:**
+
+1. ¿Qué tipo de parámetros admite la solicitud?
+2. ¿Qué tipo respuestas se pueden obtener con cada solicitud?
+3. ¿Qué tipo de restricciones tiene la API?
+
+**Preguntas de cada miembro del equipo:**
+
+1. Para las búsquedas de tu palabra, ¿cuántos resultados obtuviste?
+2. Para las búsquedas de tu palabra, ¿en qué rangos de fechas se introdujo el recurso?
+3. Para las búsquedas de tu palabra, ¿cuáles son los "media_type" más comunes?
+4. Para las búsquedas de tu palabra, ¿quiénes son los autores o instituciones propietaria de los derechos (i.e. el copyright)?
+
+# Preguntas del equipo:
+
+## 1. ¿Qué tipo de parámetros admite la solicitud?
+
+La API APOD de la NASA admite los siguientes parámetros en las solicitudes:
+
++ `api_key` (string) - La clave generada para uso ampliado. Por defecto es `DEMO_KEY`.
++ `date` (string) - Una cadena en formato YYYY-MM-DD que indica la fecha de la imagen APOD a recuperar. Debe ser posterior al 16 de junio de 1995 (1995-06-16), fecha en que se publicó por primera vez una imagen de APOD. No hay imágenes disponibles para mañana a través de esta API. Por defecto es la fecha de hoy.
++ `start_date` (string) - Una cadena en formato YYYY-MM-DD que indica el inicio de un rango de fechas. Todas las imágenes comprendidas entre `start_date` y `end_date` se devolverán en un JSON array. No se puede usar con `date`. El valor por defecto es `None`.
++ `end_date` (string) - Una cadena en formato YYYY-MM-DD que indica el final de un rango de fechas. Si se especifica `start_date` sin `end_date`, `end_date` toma por defecto la fecha actual.
++ `count` (int) - Un número entero positivo, no mayor que 100. Si se especifica, se devolverá la cantidad de imágenes elegidas aleatoriamente en un JSON array. No se puede usar junto con `date` ni con `start_date` y `end_date`. El valor por defecto es `None`.
++ `thumbs` (bool) - Un booleano `True|False` que indica si la API debe devolver la URL de la imagen en miniatura para los archivos de video. Si se establece en `True`, la API devuelve la URL de la miniatura del video. Si un APOD no es un video, este parámetro se ignora. El valor por defecto es `False`.
++ `hd` (bool) - Un booleano `True|False` que indica si se deben devolver imágenes de alta resolución. Este parámetro se incluye por motivos de compatibilidad con versiones anteriores; el servicio siempre lo ignora y, en cualquier caso, se devuelven las URL de alta resolución.
++ `concept_tags` (bool) - Un booleano `True|False` que indica si las etiquetas de concepto deben incluirse en la respuesta. Estas etiquetas no necesariamente se incluyen en la explicación, sino que se derivan de etiquetas de búsqueda comunes asociadas al texto de la descripción. (Mejor que una simple búsqueda de texto). El valor por defecto es `False`. **Por ahora, este parámetro está deshabilitado en este servicio**.
+
+## 2. ¿Qué tipo respuestas se pueden obtener con cada solicitud?
+
+La estructura de la respuesta depende de los parámetros utilizados en cada solicitud:
+
++ Si solicitas la imagen de hoy o una fecha específica con `date`, la API devolverá un único objeto JSON (un diccionario en Python).
++ Si solicitas todas las imágenes comprendidas en un rango de fechas con `start_date` y `end_date`, la API devolverá una lista de objetos JSON, uno por cada día del periodo solicitado.
++ Si solicitas un número de imágenes seleccionadas al azar con `count`, la API devolverá una lista de objetos JSON, uno por cada día seleccionado al azar.
+
+Cada objeto JSON contiene metadatos sobre la **Astronomy Picture of the Day (APOD)** del dia específicado.
+
+Los campos principales del objeto JSON son los siguientes:
+
++ `title` - El título de la imagen.
++ `date` - Fecha de la imagen.
++ `url` - La URL de la imagen o el video APOD del día.
++ `explanation` - El texto que explica la imagen.
++ `hdurl` - La URL de la imagen del día en alta resolución.
++ `media_type` - El tipo de medio (datos) devuelto. Puede ser `image` o `video` según el contenido.
++ `service_version` - Versión del servicio utilizada.
+
+Opcionales:
+
++ `copyright` - Nombre del titular de los derechos de autor. Sólo se devuelve si la imagen no es de dominio público.
++ `thumbnail_url` - La URL de la miniatura del vídeo. Sólo se devuelve si el tipo de medio es un video y si `thumbs = True`
+
+No disponibles en este servicio:
+
++ `resource`
++ `concept_tags`
++ `concepts`
+
+Además, la API devuelve un código de estado que indica si la solicitud fue exitosa o no, los más comunes son:
+
++ **200 OK:** La solicitud fue exitosa y el servidor devolvió lo que se solicitó.
++ **400 Bad Request (Solicitud incorrecta):** La solicitud estaba mal formada y el servidor no pudo entenderla. Ocurre cuando hay un error en los parámetros.
++ **403 Forbidden (Prohibido):** La solicitud está prohibida y el cliente no está autorizado para acceder al recurso. Ocurre si se proporcionó una API Key no válida.
++ **404 Not Found (No encontrado):** El recurso solicitado no existe (por ejemplo, no hay datos disponibles para la fecha de mañana).
++ **429 Too Many Requests (Demasiadas solicitudes):** Superaste el límite de solicitudes (Over Rate Limit). En este caso, ocurre al superar las 1,000 solicitudes por hora con la API key.
++ **500 Internal Server Error (Error interno del servidor):** Ocurrió un error inesperado en el servidor de la NASA.
++ **503 Service Unavailable (Servicio No disponible):**
+Indica que el servidor web está temporalmente inhabilitado para procesar solicitudes, generalmente por sobrecarga o mantenimiento.
+
+## 3. ¿Qué tipo de restricciones tiene la API?
+
+La API tiene límites establecidos en la cantidad de solicitudes que puedes realizar:
++ Utilizando una API key propia, el límite es de 1000 solicitudes por hora. Si excedes este límite, tu API key será bloqueada temporalmente y no podrás realizar más solicitudes. El bloqueo se levantará automáticamente tras una hora.
++ Utilizando la DEMO_KEY, el límite de uso es de 30 solicitudes por dirección IP por hora con un máximo de 50 solicitudes por dirección IP al día.
+
+Tiene restricciones con las fechas que puedes solicitar:
++ No puedes solicitar información anterior al 16 de junio de 1995, fecha en la que inició el servicio APOD.
++ Tampoco puedes solicitar información de fechas futuras como "mañana", la API solo responde con datos hasta la fecha de hoy.
+
+Tiene restricciones con las combinaciones de parámetros que puedes realizar en una solicitud:
++ Si usas el parámetro `date` (para obtener una imagen específica), no puedes usar `count`, `start_date` ni `end_date`.
++ Si usas el parámetro `count` (para obtener imágenes al azar), no puedes usar `date`, `start_date` ni `end_date`.
++ Si usas los parámetros `start_date` y `end_date` (para obtener todas las imágenes en un rango de fechas), no puedes usar `date` ni `count`.
++ No puedes usar el parámetro `end_date` sin usar `start_date`.
+
+Tiene restricciones con el tamaño de las solicitudes y la frecuencia de las mismas:
++ Si el rango de fechas en la solicitud es demasiado grande, la respuesta podría fallar por tiempo de espera.
++ Si realizas muchas solicitudes simultáneas se podría saturar el servicio y provocar un error en la respuesta.
+
+# Código
+
+```{python}
+# Cargar librerías
+import requests
+import pandas as pd
+import time
+from datetime import datetime
+from dotenv import load_dotenv
+import os
+```
+
+```{python}
+load_dotenv()
+# Guardar la API key generada en el sitio api.nasa.gov
+mi_api_key = os.getenv("NASA_API_KEY")
+```
+
+# Solicitud simple (para hacer pruebas)
+
+Capturar todos los registros de la API APOD con una sola solicitud (si son muchos datos genera un error en el servidor de la API):
+
+```{python}
+url = 'https://api.nasa.gov/planetary/apod'
+
+api_key = mi_api_key
+
+start_date = '1995-06-16'
+end_date = '1995-06-21' # para hacer pruebas
+#end_date = datetime.now().strftime('%Y-%m-%d')
+
+obs_params = {
+    'api_key': api_key,
+    'start_date': start_date,
+    'end_date': end_date
+}
+
+response = requests.get(url, params = obs_params)
+```
+
+Tipo de respuesta:
+
+```{python}
+response
+```
+
+```{python}
+print(response.text)
+```
+
+```{python}
+mi_data = response.json()
+mi_df = pd.DataFrame(mi_data)
+```
+
+```{python}
+mi_df.info()
+```
+
+Imprimos el dataframe desde R porque tiene mejor formato:
+
+```{r}
+py$mi_df
+```
+
+# Registros por año (para hacer pruebas)
+
+Capturar todos los registros de la API APOD por año (32 consultas)
+
+```{python}
+#| eval: false
+# Establecer API key y url para cada solicitud
+api_key = mi_api_key
+url = 'https://api.nasa.gov/planetary/apod'
+
+# Crear el DataFrame vacío que almacenará todos los registros de la api APOD
+df_registros_anio = pd.DataFrame()
+
+# Establecer año inicial y año final de registros
+anio_inicio = 1995
+anio_final = 1997
+
+for anio in range(anio_inicio, anio_final + 1):
+
+    # Ajustar fecha inicial de cada año (en 1995 empieza el 16 de junio)
+    if anio > 1995:
+        start_date = f"{anio}-01-01"
+    else:
+        start_date = "1995-06-16"
+
+    # Ajustar fecha final de cada año (en el año actual termina hoy)
+    if anio < datetime.now().year:
+        end_date = f"{anio}-12-31"
+    else:
+        end_date = datetime.now().strftime('%Y-%m-%d')
+
+    print(f"Extrayendo datos de {start_date} a {end_date}...")
+
+    # Establecer parámetros y ejecutar la solicitud
+    obs_params = {
+        "api_key": api_key,
+        "start_date": start_date,
+        "end_date": end_date
+    }
+
+    response = requests.get(url, params = obs_params)
+
+    # Capturar los registros si la solicitud es exitosa
+    if response.status_code == 200:
+        datos_anio = response.json()
+        df_anio = pd.DataFrame(datos_anio)
+        df_registros_anio = pd.concat([df_registros_anio, df_anio], ignore_index=True)
+        print("...solicitud exitosa")
+    else:
+        print(f"Error en año {anio}: {response.status_code}")
+        break
+
+    # IMPORTANTE: Modular el ritmo de las consultas porque APOD te puede bloquear
+    time.sleep(1)
+```
+
+# Registros por mes (para descargar toda la base)
+
+Capturar todos los registros por mes (372 consultas)
+
+```{python}
+#| eval: false
+# Establecer API key y URL para cada solicitud
+api_key = mi_api_key
+url = 'https://api.nasa.gov/planetary/apod'
+
+# Lista vacía para almacenar los registros
+lista_registros = []
+
+# Contadores
+meses_con_error = []
+exitos = 0
+errores = 0
+
+# Definir fechas importantes
+fecha_inicio_real = "1995-06-16"
+fecha_hoy = datetime.now().strftime('%Y-%m-%d')
+
+# Establecer el rango de fechas
+fecha_inicio = "1995-06-01"
+fecha_final = "1996-06-01"
+
+# Generar los puntos de corte a inicio de mes (MS = Month Start)
+fechas_inicio_mes = pd.date_range(start = fecha_inicio, end = fecha_final, freq = 'MS')
+
+# Iterar por cada mes
+for i, fecha_inicio_mes in enumerate(fechas_inicio_mes):
+
+    # se calcula la fecha de fin de mes
+    fecha_fin_mes = (fecha_inicio_mes + pd.offsets.MonthEnd(0))
+
+    # start_date es el primer día del mes, excepto en junio de 1995
+    start_date = fecha_inicio_mes.strftime('%Y-%m-%d')
+    if fecha_inicio_mes < datetime.strptime(fecha_inicio_real, "%Y-%m-%d"):
+        start_date = fecha_inicio_real
+
+    # end_date es el último día del mes, excepto en el mes actual
+    end_date = fecha_fin_mes.strftime('%Y-%m-%d')
+    if fecha_fin_mes > datetime.now():
+        end_date = fecha_hoy
+
+    print(f"Extrayendo datos de {start_date} a {end_date}...")
+
+    # Ejecutar la solicitud
+    obs_params = {
+        "api_key": api_key,
+        "start_date": start_date,
+        "end_date": end_date
+    }
+
+    try:
+        response = requests.get(url, params = obs_params)
+
+        if response.status_code == 200:
+            datos_mes = response.json()
+            lista_registros.extend(datos_mes)
+            exitos += 1
+            print(f"...solicitud exitosa")
+        else:
+            errores += 1
+            meses_con_error.append({'periodo': start_date,
+                                    'error': response.status_code})
+            print(f"Error {response.status_code} en el periodo {start_date}.")
+            if response.status_code == 429:
+                break
+
+    except Exception as e:
+        print(f"Error de conexión: {e}")
+        break
+
+    # Pausa para respetar los límites de la API de la NASA
+    time.sleep(2)
+
+df_registros = pd.DataFrame(lista_registros)
+
+print(f"Proceso terminado. Registros: {len(df_registros)}; Éxitos: {exitos}; Errores: {errores}")
+```
+
+Trabajar con una copia del dataframe:
+
+```{python}
+#| eval: false
+df_apod = df_registros.copy()
+```
+
+Guardamps el dataframe en un csv:
+
+```{python}
+#| eval: false
+df_registros.to_csv('api_apod_data.csv', index=False, encoding='utf-8-sig', sep=';')
+```
+
+Leer el csv con todos los registros históricos:
+
+```{python}
+df_apod =  pd.read_csv('../datos/api_apod_data.csv', sep=';')
+```
+
+```{python}
+df_apod.info()
+```
+
+```{r}
+py$df_apod
+```
+
+# Preguntas de cada miembro del equipo:
+
+1. Para las búsquedas de tu palabra, ¿cuántos resultados obtuviste?
+2. Para las búsquedas de tu palabra, ¿en qué rangos de fechas se introdujo el recurso?
+3. Para las búsquedas de tu palabra, ¿cuáles son los "media_type" más comunes?
+4. Para las búsquedas de tu palabra, ¿quiénes son los autores o instituciones propietaria de los derechos (i.e. el copyright)?
+
+```{python}
+def buscar_palabra(palabra, dataset):
+
+    palabra = palabra.lower()
+
+    # Filtrar el dataset por palabra en el campo "explanation"
+    df_palabra = dataset.loc[dataset['explanation'].str.contains(palabra, case=False, na=False)]
+
+    if len(df_palabra) > 0:
+        # 1. ¿Cuántos resultados obtuviste?
+        total_resultados = len(df_palabra)
+
+        # 2. ¿En qué rangos de fechas se introdujo el recurso?
+        fecha_min = df_palabra['date'].min()
+        fecha_max = df_palabra['date'].max()
+
+        # 3. ¿Cuáles son los "media_type" más comunes?
+
+        # Frecuencia de cada 'media_type'
+        media_type_conteos = df_palabra['media_type'].value_counts()
+
+        # Nombre y valor del 'media_type' más común
+        var_media_type = media_type_conteos.index[0]
+        conteo_media_type = media_type_conteos.iloc[0]
+
+        # 4. ¿Quiénes son los autores o instituciones propietaria de los derechos (i.e. el copyright)?
+
+        # Definir un diccionario para homologación de acrónimos y nombres con errores
+        diccionario_homologacion = {
+            "AATB": "Anglo-Australian Telescope Board",
+            "NASA": "National Aeronautics and Space Administration",
+            "ESA": "European Space Agency",
+            "JPL": "Jet Propulsion Laboratory",
+            "ESO": "European Southern Observatory",
+            "NSF": "National Science Foundation",
+            "NOAO": "National Optical Astronomy Observatory",
+            "Tunc Tezel": "Tunç Tezel",
+            "Tun� Tezel": "Tunç Tezel",
+            "Ant�nio Cidad�o": "António Cidadão"
+        }
+
+        # Obtener los registros con copyright
+        lista_autores = df_palabra['copyright'].dropna()
+
+        # Lista vacía para almacenar los nombres separados y limpios
+        lista_autores_limpia = []
+
+        for registro in lista_autores:
+            # Eliminar todo lo que venga después de "Explanation:", de ":"
+            registro_original = registro.split('Explanation:')[0].split(':')[0]
+
+            # Normalizar separadores (and, &) con comas
+            registro_normalizado = registro_original.replace(' and ', ',').replace(' & ', ',')
+
+            # Separar nombres por comas en una lista
+            nombres_separados = registro_normalizado.split(",")
+
+            # Quitar saltos de linea \n , eliminar todo lo que venga después de "(TWAN):" y limpiar espacios sobrantes
+            nombres_limpios = [nombre.replace('\n',' ').split('(TWAN)')[0].strip() for nombre in nombres_separados if nombre.strip()]
+
+            # Validar y homologar cada nombre
+            for nombre in nombres_limpios:
+                if nombre:
+                    # Homologar usando el diccionario. Si no existe la sigla, conserva el nombre original.
+                    nombre_homologado = diccionario_homologacion.get(nombre, nombre)
+                    # Agregar el nombre limpio a la lista
+                    lista_autores_limpia.append(nombre_homologado)
+
+        # Frecuencia de cada autor/institución
+        autores_conteos = pd.Series(lista_autores_limpia).value_counts().head(10)
+        #autores_conteos = pd.Series(lista_autores_limpia).apply(lambda x: unidecode(x)).value_counts().head(10)
+
+        # Contar los registros con copyright
+        conteo_copyright = df_palabra['copyright'].notna().sum()
+        # Contar los registros que son de dominio público (registros vacíos)
+        conteo_dominio_publico = df_palabra['copyright'].isna().sum()
+
+        # Impresión de resultados
+        print("="*40)
+        print(f"Registros totales en el dataset: {len(dataset)}")
+        print(f"Desde {dataset['date'].min()} hasta {dataset['date'].max()}")
+        print(f"\nPalabra: '{palabra}'")
+        print("-"*40)
+
+        print(f"1. Resultados obtenidos: {total_resultados}")
+
+        print(f"\n2. El recurso se introdujo desde {fecha_min} hasta {fecha_max}.")
+
+        print(f"\n3. El 'media_type' más común es '{var_media_type}' con {conteo_media_type} registros.")
+        print("\n--- Tabla de Frecuencias ---")
+        print(media_type_conteos.to_string(header=False))
+
+        print(f"\n4. Principales autores e instituciones propietarias de los derechos:")
+        print("\n--- Tabla de Frecuencias ---")
+        print(autores_conteos.to_string(header=False))
+        print(f"\nRegistros con Copyright: {conteo_copyright}")
+        print(f"Registros de Dominio Público: {conteo_dominio_publico}")
+        print("="*40)
+    else:
+        print(f"\nNo se encontraron resultados para la palabra '{palabra}'.")
+```
+
+Palabra de cada integrante:
+
+- b - retrograde (Betancourt Peralta Diego)
+- c - supernova (Canul Hernández Erick Iván)
+- g - nebula (Gutiérrez Gutiérrez José Omar)
+- h - planetary (Hernández Pérez Maximilian)
+- t - elliptical (Torres Vargas Brenda Poulette)
+
+```{python}
+buscar_palabra("retrograde", df_apod)
+```
+
+```{python}
+buscar_palabra("supernova", df_apod)
+```
+
+```{python}
+buscar_palabra("nebula", df_apod)
+```
+
+```{python}
+buscar_palabra("planetary", df_apod)
+```
+
+```{python}
+buscar_palabra("elliptical", df_apod)
+```
+
+

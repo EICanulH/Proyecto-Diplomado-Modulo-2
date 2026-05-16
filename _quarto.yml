@@ -1,0 +1,46 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Proyecto Módulo 2"
+  author: 
+  - "Diego Betancourt Peralta"
+  - "Brenda Poulette Torres Vargas"
+  - "José Omar Gutiérrez Gutiérrez"
+  - "Erick Iván Canul Hernández"
+  - "Maximiliano Hernández Pérez"
+  date: today
+  date-format: "MMMM D, YYYY"
+  chapters:
+    - index.qmd
+    - 01-vuelos-ny\parte1-vuelos-ny.qmd
+    - 02-api-nasa\parte2-api-nasa.qmd
+
+format:
+  html:
+    theme: 
+      dark: [darkly, darkly-fix.scss]
+      light: [flatly, flatly-fix.scss]
+    highlight-style:
+      dark: nord
+      light: atom-one
+    respect-user-color-scheme: true
+    df-print: paged
+    toc: true
+    toc-depth: 5
+    number-sections: true
+    toc-expand: true
+    grid:
+      sidebar-width: 300px
+      body-width: 1100px
+      margin-width: 300px
+      gutter-width: 1.1rem
+    
+execute:
+  cache: true
+  freeze: auto
+  echo: true
+  output: true
+  warning: false
+  message: false

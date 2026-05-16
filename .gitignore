@@ -1,0 +1,26 @@
+# Quarto
+/.quarto/
+*_cache/
+_freeze/
+
+# RStudio
+.Rhistory
+.RData
+.Rproj.user/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+**/*.quarto_ipynb
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Secrets
+.env

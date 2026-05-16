@@ -1,0 +1,18 @@
+/*-- scss:defaults --*/
+
+/* Inline code inside text (including headers) */
+$code-bg: #373737;   // dark gray background
+$code-color: #e0aaff; // light text (similar to VSCode dark)
+
+$font-family-sans-serif: sans-serif;
+
+.cell-output pre {
+  // background-color: #222222;   /* the same as the main background */
+  border: 1px solid #ffffff20; /* thin semi-transparent white border */
+  border-radius: 0.4em;
+  padding: 0.6em 0.9em;
+  // color: #dee2e6;              /* light gray text for readability */
+  margin-bottom: 1em;
+  // font-family: "Fira Mono", monospace;
+  // font-size: 0.9em;
+}
