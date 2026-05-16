@@ -1,0 +1,42 @@
+[
+  {
+    "objectID": "02-api-nasa/parte2-api-nasa.html",
+    "href": "02-api-nasa/parte2-api-nasa.html",
+    "title": "Segunda parte - Python: API APOD de la NASA",
+    "section": "",
+    "text": "Instrucciones\nBasándose en solicitudes de la API en el campo “explanation” haz búsquedas basadas en tu palabra y responde la siguientes preguntas:\nPreguntas del equipo:\nPreguntas de cada miembro del equipo:",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Segunda parte - Python: API APOD de la NASA</span>"
+    ]
+  },
+  {
+    "objectID": "02-api-nasa/parte2-api-nasa.html#qué-tipo-de-parámetros-admite-la-solicitud",
+    "href": "02-api-nasa/parte2-api-nasa.html#qué-tipo-de-parámetros-admite-la-solicitud",
+    "title": "Segunda parte - Python: API APOD de la NASA",
+    "section": "1. ¿Qué tipo de parámetros admite la solicitud?",
+    "text": "1. ¿Qué tipo de parámetros admite la solicitud?\nLa API APOD de la NASA admite los siguientes parámetros en las solicitudes:\n\napi_key (string) - La clave generada para uso ampliado. Por defecto es DEMO_KEY.\ndate (string) - Una cadena en formato YYYY-MM-DD que indica la fecha de la imagen APOD a recuperar. Debe ser posterior al 16 de junio de 1995 (1995-06-16), fecha en que se publicó por primera vez una imagen de APOD. No hay imágenes disponibles para mañana a través de esta API. Por defecto es la fecha de hoy.\nstart_date (string) - Una cadena en formato YYYY-MM-DD que indica el inicio de un rango de fechas. Todas las imágenes comprendidas entre start_date y end_date se devolverán en un JSON array. No se puede usar con date. El valor por defecto es None.\nend_date (string) - Una cadena en formato YYYY-MM-DD que indica el final de un rango de fechas. Si se especifica start_date sin end_date, end_date toma por defecto la fecha actual.\ncount (int) - Un número entero positivo, no mayor que 100. Si se especifica, se devolverá la cantidad de imágenes elegidas aleatoriamente en un JSON array. No se puede usar junto con date ni con start_date y end_date. El valor por defecto es None.\nthumbs (bool) - Un booleano True|False que indica si la API debe devolver la URL de la imagen en miniatura para los archivos de video. Si se establece en True, la API devuelve la URL de la miniatura del video. Si un APOD no es un video, este parámetro se ignora. El valor por defecto es False.\nhd (bool) - Un booleano True|False que indica si se deben devolver imágenes de alta resolución. Este parámetro se incluye por motivos de compatibilidad con versiones anteriores; el servicio siempre lo ignora y, en cualquier caso, se devuelven las URL de alta resolución.\nconcept_tags (bool) - Un booleano True|False que indica si las etiquetas de concepto deben incluirse en la respuesta. Estas etiquetas no necesariamente se incluyen en la explicación, sino que se derivan de etiquetas de búsqueda comunes asociadas al texto de la descripción. (Mejor que una simple búsqueda de texto). El valor por defecto es False. Por ahora, este parámetro está deshabilitado en este servicio.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Segunda parte - Python: API APOD de la NASA</span>"
+    ]
+  },
+  {
+    "objectID": "02-api-nasa/parte2-api-nasa.html#qué-tipo-respuestas-se-pueden-obtener-con-cada-solicitud",
+    "href": "02-api-nasa/parte2-api-nasa.html#qué-tipo-respuestas-se-pueden-obtener-con-cada-solicitud",
+    "title": "Segunda parte - Python: API APOD de la NASA",
+    "section": "2. ¿Qué tipo respuestas se pueden obtener con cada solicitud?",
+    "text": "2. ¿Qué tipo respuestas se pueden obtener con cada solicitud?\nLa estructura de la respuesta depende de los parámetros utilizados en cada solicitud:\n\nSi solicitas la imagen de hoy o una fecha específica con date, la API devolverá un único objeto JSON (un diccionario en Python).\nSi solicitas todas las imágenes comprendidas en un rango de fechas con start_date y end_date, la API devolverá una lista de objetos JSON, uno por cada día del periodo solicitado.\nSi solicitas un número de imágenes seleccionadas al azar con count, la API devolverá una lista de objetos JSON, uno por cada día seleccionado al azar.\n\nCada objeto JSON contiene metadatos sobre la Astronomy Picture of the Day (APOD) del dia específicado.\nLos campos principales del objeto JSON son los siguientes:\n\ntitle - El título de la imagen.\ndate - Fecha de la imagen.\nurl - La URL de la imagen o el video APOD del día.\nexplanation - El texto que explica la imagen.\nhdurl - La URL de la imagen del día en alta resolución.\nmedia_type - El tipo de medio (datos) devuelto. Puede ser image o video según el contenido.\nservice_version - Versión del servicio utilizada.\n\nOpcionales:\n\ncopyright - Nombre del titular de los derechos de autor. Sólo se devuelve si la imagen no es de dominio público.\nthumbnail_url - La URL de la miniatura del vídeo. Sólo se devuelve si el tipo de medio es un video y si thumbs = True\n\nNo disponibles en este servicio:\n\nresource\nconcept_tags\nconcepts\n\nAdemás, la API devuelve un código de estado que indica si la solicitud fue exitosa o no, los más comunes son:\n\n200 OK: La solicitud fue exitosa y el servidor devolvió lo que se solicitó.\n400 Bad Request (Solicitud incorrecta): La solicitud estaba mal formada y el servidor no pudo entenderla. Ocurre cuando hay un error en los parámetros.\n403 Forbidden (Prohibido): La solicitud está prohibida y el cliente no está autorizado para acceder al recurso. Ocurre si se proporcionó una API Key no válida.\n404 Not Found (No encontrado): El recurso solicitado no existe (por ejemplo, no hay datos disponibles para la fecha de mañana).\n429 Too Many Requests (Demasiadas solicitudes): Superaste el límite de solicitudes (Over Rate Limit). En este caso, ocurre al superar las 1,000 solicitudes por hora con la API key.\n500 Internal Server Error (Error interno del servidor): Ocurrió un error inesperado en el servidor de la NASA.\n503 Service Unavailable (Servicio No disponible): Indica que el servidor web está temporalmente inhabilitado para procesar solicitudes, generalmente por sobrecarga o mantenimiento.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Segunda parte - Python: API APOD de la NASA</span>"
+    ]
+  },
+  {
+    "objectID": "02-api-nasa/parte2-api-nasa.html#qué-tipo-de-restricciones-tiene-la-api",
+    "href": "02-api-nasa/parte2-api-nasa.html#qué-tipo-de-restricciones-tiene-la-api",
+    "title": "Segunda parte - Python: API APOD de la NASA",
+    "section": "3. ¿Qué tipo de restricciones tiene la API?",
+    "text": "3. ¿Qué tipo de restricciones tiene la API?\nLa API tiene límites establecidos en la cantidad de solicitudes que puedes realizar: + Utilizando una API key propia, el límite es de 1000 solicitudes por hora. Si excedes este límite, tu API key será bloqueada temporalmente y no podrás realizar más solicitudes. El bloqueo se levantará automáticamente tras una hora. + Utilizando la DEMO_KEY, el límite de uso es de 30 solicitudes por dirección IP por hora con un máximo de 50 solicitudes por dirección IP al día.\nTiene restricciones con las fechas que puedes solicitar: + No puedes solicitar información anterior al 16 de junio de 1995, fecha en la que inició el servicio APOD. + Tampoco puedes solicitar información de fechas futuras como “mañana”, la API solo responde con datos hasta la fecha de hoy.\nTiene restricciones con las combinaciones de parámetros que puedes realizar en una solicitud: + Si usas el parámetro date (para obtener una imagen específica), no puedes usar count, start_date ni end_date. + Si usas el parámetro count (para obtener imágenes al azar), no puedes usar date, start_date ni end_date. + Si usas los parámetros start_date y end_date (para obtener todas las imágenes en un rango de fechas), no puedes usar date ni count. + No puedes usar el parámetro end_date sin usar start_date.\nTiene restricciones con el tamaño de las solicitudes y la frecuencia de las mismas: + Si el rango de fechas en la solicitud es demasiado grande, la respuesta podría fallar por tiempo de espera. + Si realizas muchas solicitudes simultáneas se podría saturar el servicio y provocar un error en la respuesta.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Segunda parte - Python: API APOD de la NASA</span>"
+    ]
+  }
+]
