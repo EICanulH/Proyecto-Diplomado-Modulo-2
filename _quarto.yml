@@ -29,7 +29,7 @@ format:
     df-print: paged
     toc: true
     toc-depth: 5
-    number-sections: true
+    number-sections: false
     toc-expand: true
     grid:
       sidebar-width: 300px
