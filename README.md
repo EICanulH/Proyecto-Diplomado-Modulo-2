@@ -9,3 +9,7 @@ Integrantes del equipo:
 - Erick Iván Canul Hernández
 - José Omar Gutiérrez Gutiérrez
 - Maximiliano Hernández Pérez
+
+Sitio web del proyecto: https://eicanulh.github.io/Proyecto-Diplomado-Modulo-2/
+
+Los notebooks utilizados para crear el notebook:
