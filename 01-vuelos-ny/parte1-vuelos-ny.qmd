@@ -11,6 +11,12 @@ execute:
   cache: false
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  results = "hold"
+)
+```
+
 # Instrucciones
 
 Utilizaremos las tablas de la base de datos `vuelos.db` que incluye información de:

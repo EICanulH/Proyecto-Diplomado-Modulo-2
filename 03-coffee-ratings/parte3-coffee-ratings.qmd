@@ -9,6 +9,12 @@ author:
 format: html
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  results = "hold"
+)
+```
+
 # Instrucciones:
 
 Se usará el conjunto de datos de encuesta de café (`coffee_ratings.csv`).
@@ -26,3 +32,705 @@ Se usará el conjunto de datos de encuesta de café (`coffee_ratings.csv`).
 -   Actividad 10: Elabore una visualización con `ggplot2` que relacione el `aftertaste`, `acidity`, `body` y `species` en un mismo canvas.
 
 *Importante:* Sus visualizaciones deben tener formato suficientemente bueno para publicar en alguna revista.
+
+# Librerías y datos
+
+```{r}
+#| echo: false
+#| include: false
+# Cómo ejecutar este chunk, o si es necesario ejecutarlo, dependerá de su instalación de Python
+library(reticulate)
+# Seleccionamos el environment de python que vamos a utilizar
+nombre_env = "diplomadov2"
+use_condaenv(nombre_env)
+
+# Environments que no sean de conda:
+# use_python(nombre_env)
+# use_virtualenv(nombre_env)
+repl_python()
+```
+
+Cargamos las librerías necesarias.
+
+```{r}
+library(tidyverse) # Incluye dplyr, ggplot2, stringr y lubridate
+library(scales)
+library(skimr)
+```
+
+Se usará el conjunto de datos de encuesta de café `coffee_ratings.csv`
+
+```{r}
+datos <- read_csv("../datos/coffee_ratings.csv", show_col_types = FALSE)
+datos
+```
+
+Dimensión del conjunto de datos:
+
+```{r}
+dim(datos)
+```
+
+# Actividad 0
+
+Realice un análisis de valores faltantes del objeto `datos`
+
+Resumen de valores faltantes
+
+```{r}
+resumen <- skim(datos) %>%
+  as_tibble()
+
+resumen <- resumen %>%
+  mutate(missing_rate = 1 - complete_rate)
+
+resumen %>%
+  select(skim_variable, skim_type, n_missing, missing_rate) %>%
+  arrange(desc(missing_rate))
+```
+
+Visualización de valores faltantes.
+
+```{r}
+resumen %>%
+  select(skim_variable, missing_rate) %>%
+  arrange(desc(missing_rate)) %>%
+  ggplot(aes(x = reorder(skim_variable, missing_rate), y = missing_rate)) +
+  geom_col(fill = "orange") +
+  coord_flip() +
+  labs(
+    x = "variable", 
+    y = "% de faltantes", 
+    title = "Valores faltantes por variable"
+  )
+```
+
+Observamos que `lot_number`  (número de lote del café evaluado) es la variable que presenta la mayor proporción de valores faltantes (79%), seguida por `farm_name` (26%) y `mill` (molino donde se procesó el café, 23%), lo que sugiere que no todas las fincas o productores documentan con el mismo nivel de detalle la información de sus lotes y procesos de molienda.
+
+Por otra parte, identificamos un patrón de ausencia conjunta en las variables geográficas relacionadas con la altitud, pues los registros con valores faltantes en `altitude_low_meters`, también presentan datos faltantes en `altitude_high_meters` y `altitude_mean_meters`. De manera similar, los registros con valores faltantes en `altitude`, tienden también a presentar valores ausentes en la variable `variety`. Lo que indica que esos faltantes no son aleatorios, sino sistemáticos.
+
+No obstante, las variables de evaluación sensorial (`aroma`, `acidity`, `body`, `balance`, `flavor`, `aftertaste`, `cupper_points`, `sweetness`, `uniformity`, `clean_cup`) y las de clasificación (`total_cup_points`, `species`) están prácticamente completas para efectos posteriores de análisis.
+
+# Actividad 1
+
+Crear una columna llamada `color2` que se base en los valores de la columna `color`, que asigne el valor NA si  `color == NA`, `"#00FF66"` si `color == 'Green'`, `"#CCEBC5"` si `color == 'Bluish-green'` y `"#BFFFFF"` si `color == 'Blue-green'`
+
+Crear columna color2:
+
+```{r}
+datos$color2 <- dplyr::case_when(
+  is.na(datos$color) ~ NA_character_,
+  datos$color == "Green" ~ "#00FF66",
+  datos$color == "Bluish-Green" ~ "#CCEBC5",
+  datos$color == "Blue-Green" ~ "#BFFFFF",
+  TRUE ~ NA_character_
+)
+```
+
+Visualización de la nueva columna
+
+```{r}
+datos %>% distinct(color, color2)
+```
+
+# Actividad 2
+
+Crear una columna llamada `bag_weight2` que se base en los valores de la columna `bag_weight`, que sólo contenga el valor numérico de ésta. Es decir, `bag_weight2` debe ser numérica. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?
+
+Obteniendo los valores únicos de la columna `bag_weight`, se identificaron varias ambigüedades que se pueden clasificar o agrupar en 4 casos:
+- Caso (kg, lbs): Las observaciones contienen unidades mixtas (kg seguido de lbs).
+- Caso (lbs): Las observaciones están registradas en lbs.
+- Caso (kg): Las observaciones están registradas en kg.
+- Caso (#): Las observaciones no muestran ningún tipo de medida, únicamente el valor numérico.
+
+Para estandarizar la misma unidad de medida, se decidió trabajar con kg, entonces las observaciones en lbs se multiplicaron por el factor de conversión a kg (1lb = 0.453592 kg), los demás casos permanecieron sin cambios, únicamente se extrajo su valor numérico. De esta forma se evitan mayores ambigüedades.
+
+```{r}
+datos <- datos %>%
+  mutate(
+    bag_weight2 = case_when(
+      #Si tenemos kg (aunque también diga lbs), tomamos los kg
+      str_detect(bag_weight, "kg") ~ parse_number(bag_weight),
+      #Si sólo tenemos lbs, convertimos a kg
+      str_detect(bag_weight, "lbs") ~ parse_number(bag_weight) * 0.453592,
+      #Si sólo es número, mantenemos las unidades
+      TRUE ~ parse_number(bag_weight)
+    )
+  )
+```
+
+# Actividad 3
+
+Crear dos columnas llamadas `method1` y `method2` que se basen en los valores de la columna `processing_method`, dividiendo en dos partes los valores dicha columna. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?
+
+Crear columnas `method1` y `method2`:
+
+```{r}
+datos <- datos %>%
+  mutate(
+    # str_split_fixed() devuelve una matriz, por eso usamos [,1] y [,2]
+    method1 = str_split_fixed(processing_method, "/", n = 2)[, 1] %>% str_trim(),
+    method2 = str_split_fixed(processing_method, "/", n = 2)[, 2] %>% str_trim(),
+    # Convertir strings vacíos a NA
+    method1 = na_if(method1, ""),
+    method2 = na_if(method2, "")
+  )
+```
+
+Observaciones ambiguas:
+
+1. `NA`s originales en `processing_method`.
+2. Valores sin `"/"` (no se pueden dividir en dos partes, e.g. `"Other"`).
+
+```{r}
+na_originales  <- sum(is.na(datos$processing_method))
+sin_slash      <- sum(!is.na(datos$processing_method) &
+                        !str_detect(datos$processing_method, "/"))
+ambiguedad_act3 <- na_originales + sin_slash
+
+cat(sprintf("NAs originales en processing_method : %d\n", na_originales))
+cat(sprintf("Registros sin '/'                   : %d\n", sin_slash))
+cat(sprintf("Total observaciones ambiguas        : %d\n", ambiguedad_act3))
+cat("\nValores únicos resultantes:\n")
+datos %>%
+  distinct(processing_method, method1, method2) %>%
+  print()
+```
+
+# Actividad 4
+
+Crear tres columnas llamadas `expiration_day`, `expiration_month` y `expiration_year` que se basen en los valores de la columna `expiration`. ¿Cuántas observaciones llevaron a ambigüedad para crear estas nuevas columnas?
+
+Primero revisemos si hay algún valor faltante:
+
+```{r}
+anyNA(datos$expiration)
+```
+
+Vamos a utilizar la función `mdy()` (por *month day year*, pues las fechas están en formato Mes Día, Año) del paquete `lubridate` para convertir la columna `expiration` a tipo fecha.
+
+A pesar de que la función `mdy()` puede reconocer muchos formatos diferentes en los que una fecha puede estar escrito, primero hagamos unas validaciones rápidas para asegurarnos de que ninguna fecha será convertida incorrectamente.
+
+Revisemos que la primera sección de cada *string*, antes del primer número, es el mes:
+
+```{r}
+unique(sub("^([^0-9]+).*", "\\1", datos$expiration))
+```
+
+En efecto, la primera parte de cada string es el nombre del mes. Ahora veamos si la última parte de cada *string* corresponde a un año:
+
+```{r}
+unique(str_sub(datos$expiration, -5, -1))
+```
+
+Lo único raro es el valor que termina en el carácter de nueva línea (`"\n"`). Sin embargo, la función `mdy()` no tiene problemas en convertir una fecha que termine con ese carácter. Además, solo una fila tiene esta inconsistencia:
+
+```{r}
+datos |>
+  filter(grepl("\\n$", expiration)) |>
+  select(expiration)
+```
+
+```{r}
+mdy("November 15th, 2018\n")
+class(mdy("November 15th, 2018\n"))
+```
+
+Extraigamos la sección de cada string que esté rodeadas de espacios, lo cual correspondería al día, su sufijo ordinal y una coma:
+
+```{r}
+datos$expiration |>
+  str_extract("(?<=\\s).+?(?=[\\s])") |>
+  unique() |>
+  sort()
+```
+
+Todos los valores son consistentes. Vamos a realizar una última validación para determinar si todas las strings tienen el mismo formato:
+
+1. Conjunto de caracteres correspondientes al mes. Ya sabemos que todos los meses están nombrados consistentemente.
+2. Un espacio.
+3. Un número más su sufijo ordinal y una coma.
+4. Un espacio.
+5. 4 dígitos, correspondientes al año. Ya vimos que todos los años están nombrados consistentemente.
+
+Como ya vimos, una de las filas no cumple con este formato, ya que termina con el carácter de nueva línea, pero la función `mdy()` no tiene problemas para convertir correctamente esta *string* a tipo fecha.
+
+```{r}
+datos |>
+  filter(!grepl("^([A-Za-z]+) ([0-9]+(?:st|nd|rd|th)), ([0-9]{4})$", expiration)) |>
+  select(expiration)
+```
+
+Ahora sí convirtamos la columna `expiration` a tipo fecha con la función `mdy()`. Podemos extraer el día, mes y año con las funciones `day()`, `month()` y `year()` respectivamente. Echemos un vistazo al resultado y después actualicemos el dataframe.
+
+```{r}
+datos |>
+  mutate(
+    expiration_date_type = mdy(expiration),
+    expiration_day = day(expiration_date_type),
+    expiration_month = month(expiration_date_type),
+    expiration_year = year(expiration_date_type)
+  ) |>
+  select(expiration, expiration_date_type, expiration_day, expiration_month, expiration_year) |>
+  head(10)
+```
+
+```{r}
+datos <- datos |>
+  mutate(
+    expiration_date_type = mdy(expiration),
+    expiration_day = day(expiration_date_type),
+    expiration_month = month(expiration_date_type),
+    expiration_year = year(expiration_date_type)
+  ) |>
+  # Quitamos la columna intermedia que utilizamos para crear las de interés
+  select(-expiration_date_type)
+```
+
+No hubo ninguna ambigüedad:
+
+```{r}
+anyNA(datos$expiration_day)
+anyNA(datos$expiration_month)
+anyNA(datos$expiration_year)
+```
+
+```{r}
+range(datos$expiration_day)
+range(datos$expiration_month)
+range(datos$expiration_year)
+```
+
+# Actividad 5
+
+Crear dos columnas llamadas `harvest_mes` y `harvest_anio` que se basen en los valores de la columna `harvest_year`, dividiendo en dos partes los valores dicha columna. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?
+
+Primero revisemos si hay valores faltantes en la columna `harvest_year`
+
+```{r}
+# ¿Cuantos valores faltantes contiene?
+sum(is.na(datos$harvest_year))
+```
+
+Vemos que tiene 47 valores faltantes.
+
+Ahora, ¿qué tipo de valores contiene la columna `harvest_year`?
+
+```{r}
+# ¿qué tipo de valores contiene?
+unique(datos$harvest_year)
+```
+
+Notamos que es una columna que registra fechas pero tiene serios problemas de calidad de datos. Es inconsistente en el formato de las fechas; mezcla texto en español e inglés; contiene datos de prueba como `"mmm"` y `"TEST"`; tiene errores tipográficos evidentes; contiene rangos de fechas; mezcla fechas en años, meses, estaciones del año, trimestres, etc.
+
+A continuación, vamos extraer, cuando sea posible, el año y el mes de la columna `harvest_year` mediante expresiones regulares.
+
+La nueva columna `harvest_anio` captura el primer año que aparece en la observación, mientras que `harvest_mes` captura el primer mes que aparece en la observación.
+
+```{r}
+# Definir el patrón de meses en inglés y español
+patron_meses <- "(Jan|Ene|Feb|Mar|Apr|Abr|May|Jun|Jul|Aug|Ago|Sep|Oct|Nov|Dec|Dic)"
+
+# Crear columnas harvest_anio y harvest_mes apartir de harvest_year
+datos <- datos %>%
+  mutate(
+    harvest_anio = case_when(
+      # Busca el primer grupo de 4 dígitos seguidos
+      str_detect(harvest_year, "\\b\\d{4}\\b") ~ str_extract(harvest_year, "\\b\\d{4}\\b"),
+      # Busca casos especiales
+      str_detect(harvest_year, "4T/10|72010") ~ "2010",
+      str_detect(harvest_year, "08/09") ~ "2008",
+      TRUE ~ NA_character_
+    ) %>% as.numeric(),
+    
+    # Extrae la primera palabra que parezca un mes
+    mes_corto = str_extract(harvest_year, regex(patron_meses, ignore_case = TRUE)),
+    
+    harvest_mes = case_when(
+      # Convierte el mes corto a mes completo en inglés
+      str_detect(mes_corto, regex("Jan|Ene", ignore_case = T)) ~ "January",
+      str_detect(mes_corto, regex("Feb", ignore_case = T)) ~ "February",
+      str_detect(mes_corto, regex("Mar", ignore_case = T)) ~ "March",
+      str_detect(mes_corto, regex("Apr|Abr", ignore_case = T)) ~ "April",
+      str_detect(mes_corto, regex("May", ignore_case = T)) ~ "May",
+      str_detect(mes_corto, regex("Jun", ignore_case = T)) ~ "June",
+      str_detect(mes_corto, regex("Jul", ignore_case = T)) ~ "July",
+      str_detect(mes_corto, regex("Aug|Ago", ignore_case = T)) ~ "August",
+      str_detect(mes_corto, regex("Sep", ignore_case = T)) ~ "September",
+      str_detect(mes_corto, regex("Oct", ignore_case = T)) ~ "October",
+      str_detect(mes_corto, regex("Nov", ignore_case = T)) ~ "November",
+      str_detect(mes_corto, regex("Dec|Dic", ignore_case = T)) ~ "December",
+      TRUE ~ NA_character_
+    )
+  ) %>% 
+  select(-mes_corto) # Elimina la variable temporal
+```
+
+Visualización de las nuevas columnas:
+
+```{r}
+datos %>% distinct(harvest_year, harvest_anio, harvest_mes) %>% head()
+```
+
+**¿Cuántas observaciones llevaron a ambigüedad para crear estas nuevas columnas?**
+
+Para la columna `harvest_year` consideramos que las observaciones que llevaron a ambigüedad en las columnas `harvest_anio` y `harvest_mes` son:
+
++ valores faltantes
++ observaciones que no contienen año
++ observaciones que no contienen mes
++ observaciones que contienen estaciones y trimestres
++ observaciones que no son fechas
++ observaciones que provienen de rangos de fechas
+
+```{r}
+# Identificar ambigüedades
+ambiguos_act5_R <- datos %>%
+  dplyr::filter(
+    is.na(harvest_year) |
+      is.na(harvest_anio) |
+      is.na(harvest_mes) |
+      str_detect(harvest_year, "\\d[Tt]") |
+      str_detect(harvest_year, regex("spring|fall|winter|summer", ignore_case = TRUE)) |
+      str_detect(harvest_year, "mmm|TEST") |
+      str_detect(harvest_year, "-|/| to | a |Through")
+  )
+
+# Contar ambigüedades
+total_ambiguos_act5_R <- nrow(ambiguos_act5_R)
+print(paste(
+  "Número de observaciones que generan ambigüedad:",
+  total_ambiguos_act5_R
+))
+```
+
+En conclusión, hay 1,333 observaciones en la columna `harvest_year` que generan ambigüedad en la columnas `harvest_anio` y `harvest_mes`. Prácticamente todas.
+
+# Actividad 6
+
+Elabore una visualización con `ggplot2` que identifique alguna relación entre las columnas total_cup_points, acidity y color2 de tal forma que se puedan identificar los colores de la variable color2. Es decir, debemos ver los colores, "#00FF66", "#CCEBC5" y "#BFFFFF".
+
+```{r}
+ggplot(datos, aes(x = acidity, y = total_cup_points, color = color2)) +
+  geom_point(size = 1.5, alpha = 2) +
+  scale_color_identity(
+    guide = "legend",
+    labels = c("Green", "Bluish-green", "Blue-green"),
+    breaks = c("#00FF66", "#CCEBC5", "#BFFFFF"),
+    name = "Color"
+  ) +
+  labs(
+    title = "Relación entre Acidity y Total Cup Points", 
+    x = "Acidity", 
+    y = "Total Cup Points"
+  ) +
+  theme_minimal()
+```
+
+Notemos que a media que incremente el puntaje de acidez, también tiende a incrementar el puntaje total del café, lo que parece indicar una relación lineal y positiva entre las variables observadas.
+
+```{r}
+cor(datos$total_cup_points, datos$acidity)
+```
+
+Con la correlación de Pearson de $r=0.797$ que confirmamos la relación es relativamente fuerte y positiva entre `acidity` y `total_cup_points`, de modo que, en general, los cafés con mayores calificaciones de acidez, tienden también a obtener puntajes totales más altos.
+
+No obstante, respecto a la variable `color2`, se observa un claro predominio de la categoría Green, mientras que Bluish-green y Blue-green aparecen con mucha menor frecuencia, por lo que no se aprecia una diferenciación visual fuerte entre colores en la relación analizada.
+
+# Actividad 7
+
+Elabore una visualización de densidad con `ggplot2` de la variable `bag_weight2` diferenciando a los valores de `species`.
+
+A partir del resumen descriptivo `summary(datos$bagweight2)`, observamos una distribución asimétrica con valores extremadamente grandes. El 75% de los datos es menor o igual a 69 kg, mientras que hay valores por encima de los 1000 kg, generando una diferencia en la escala de los datos.
+
+Es por ello que se decidió utilizar una escala logarítmica en el eje `x`, esto permitió reducir este efecto de valores extremos y mejorar la visibilización del gráfico. Dado que `log(0)` es indefinido, las observaciones con valor igual a 0 (4 observaciones) no fueron consideradas dentro de la transformación logarítmica, para fines prácticos.
+
+Con esto, podemos observar dos principales concentraciones de pesos de bolsa: entre 1 a 4 kg, y otra entre 50 a 100 kg. Siendo la especie *Arabica* aquella con menor dispersión, es decir pesos más estandarizados mientras que la especie *Robusta*, tiene pesos con mayor variación.
+
+```{r}
+# Resumen adicional
+summary(datos$bag_weight2)
+```
+
+Gráfico de densidad en escala logarítmica:
+
+```{r}
+datos |>
+  filter(bag_weight2 > 0) |>
+  ggplot(aes(x = bag_weight2, fill = species)) +
+  geom_density(alpha = 0.5) +
+  scale_x_log10(limits = c(1, 20000)) +
+  labs(
+    title = "Distribución de bag_weight2 por especie de café", 
+    x = "Peso de bolsa (kg, escala log10)", 
+    y = "Densidad"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(plot.title = element_text(
+    hjust = 0.5,
+    # Mitad del título
+    face = "bold",
+    size = 16
+  ))
+```
+
+# Actividad 8
+
+Elabore una visualización que relacione el año/mes de expiración con el `total_cup_points` sólo de los granos mexicanos, brasileños, colombianos y guatemaltecos.
+
+```{r}
+paises <- c("Mexico", "Brazil", "Colombia", "Guatemala")
+colores <- c(
+  "Mexico"    = "#FF6B35",
+  "Brazil"    = "#06D6A0",
+  "Colombia"  = "#118AB2",
+  "Guatemala" = "#FFD166"
+)
+
+datos_act8 <- datos %>%
+  mutate(
+    expiration_parsed = mdy(str_replace(expiration, "(\\d+)(st|nd|rd|th)", "\\1")),
+    exp_ym            = floor_date(expiration_parsed, "month")
+  ) %>%
+  filter(country_of_origin %in% paises,
+         !is.na(exp_ym),
+         !is.na(total_cup_points))
+
+# Media global como referencia
+media_global <- mean(datos_act8$total_cup_points, na.rm = TRUE)
+```
+
+```{r}
+p8 <- ggplot(
+  datos_act8,
+  aes(
+    x = exp_ym,
+    y = total_cup_points,
+    color = country_of_origin,
+    fill  = country_of_origin
+  )
+) +
+  
+  geom_point(alpha = 0.25,
+             size = 1.5,
+             shape = 16) +
+  
+  geom_smooth(
+    method = "loess",
+    se = TRUE,
+    alpha = 0.12,
+    linewidth = 1.8
+  ) +
+
+  scale_color_manual(values = colores) +
+  scale_fill_manual(values  = colores) +
+
+  scale_x_date(
+    date_breaks = "2 years",
+    date_labels = "%Y",
+    expand      = expansion(mult = 0.03)
+  ) +
+  scale_y_continuous(
+    limits = c(62, 95),
+    breaks = seq(65, 95, by = 5)
+  ) +
+
+  facet_wrap(~ country_of_origin, ncol = 2) +
+
+  labs(
+    title    = "Puntaje Total de Taza según Fecha de Expiración",
+    x        = "Año de expiración",
+    y        = "Total Cup Points"
+  ) +
+
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.background  = element_rect(fill = "white", color = NA),
+    panel.background = element_rect(fill = "white", color = NA),
+
+    panel.grid.major.y = element_line(color = "#F0F0F0", linewidth = 0.7),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor   = element_blank(),
+
+    panel.border = element_blank(),
+    axis.line.x  = element_line(color = "#DDDDDD"),
+    axis.line.y  = element_line(color = "#DDDDDD"),
+
+    plot.title    = element_text(face  = "bold", size = 15,
+                                 color = "#111111", margin = margin(b = 4)),
+    plot.subtitle = element_text(size  = 10.5, color = "#777777",
+                                 face  = "italic", margin = margin(b = 12)),
+    plot.caption  = element_text(size  = 7.5, color = "#BBBBBB",
+                                 margin = margin(t = 10)),
+    plot.margin   = margin(20, 20, 12, 20),
+
+    axis.title   = element_text(size = 9, color = "#555555"),
+    axis.text.x  = element_text(angle = 45, hjust = 1,
+                                size = 8.5, color = "#555555"),
+    axis.text.y  = element_text(size = 8.5, color = "#555555"),
+
+    strip.text       = element_text(face = "bold", size = 11,
+                                    color = "white", 
+                                    margin = margin(4, 4, 4, 4)),
+    strip.background = element_rect(fill = "#333333", color = NA),
+
+    legend.position = "none"
+  )
+
+p8
+```
+
+```{r}
+cat(sprintf("Registros graficados: %d\n", nrow(datos_act8)))
+cat("\nConteo por país:\n")
+print(table(datos_act8$country_of_origin))
+```
+
+# Actividad 9
+
+Elabore una visualización con `ggplot2` que relacione el mes de expiración con el `altitude_mean_meters`, `altitude_low_meters` y `altitude_high_meters` sólo de los granos mexicanos, brasileños, colombianos y guatemaltecos de los años de expiración 2016 y 2017.
+
+Vamos a crer un dataframe que utilizaremos para crear la gráfica llamado `datos_altitud`.
+
+```{r}
+datos_altitud <- datos |>
+  select(expiration_year, expiration_month, country_of_origin,
+         altitude_mean_meters, altitude_low_meters, altitude_high_meters) |>
+  filter(
+    country_of_origin %in% c("Mexico", "Brazil", "Colombia", "Guatemala"),
+    expiration_year %in% c(2016, 2017)
+  ) |>
+  drop_na() |>
+  pivot_longer(
+    cols = starts_with("altitude"),
+    names_to = "altitude",
+    values_to = "meters"
+  ) |>
+  mutate(
+    altitude = str_extract(altitude, "(?<=_)[a-z]+(?=_)"), # Quitar 'altitude_' y '_meters'
+    altitude = case_when(
+      altitude == "low" ~ "Bajo",
+      altitude == "mean" ~ "Promedio",
+      altitude == "high" ~ "Alto"
+    ),
+    altitude = factor(altitude, levels = c("Alto", "Promedio", "Bajo"), ordered = TRUE),
+    expiration_month = month(expiration_month, label = TRUE, abbr = FALSE),
+   expiration_month = factor(
+     str_to_title(expiration_month),
+     levels = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
+                "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"),
+     ordered = TRUE
+   ),
+    expiration_year = factor(expiration_year),
+    country_of_origin = str_replace_all(country_of_origin, c("Mexico" = "México", "Brazil" = "Brasil"))
+  ) |>
+  rename(month = expiration_month, year = expiration_year)
+
+head(datos_altitud)
+```
+
+```{r}
+#| fig-width: 10
+#| fig-height: 15
+datos_altitud |>
+  ggplot(aes(x = month, y = meters)) +
+  # Primero graficamos los boxplots
+  geom_boxplot() +
+  # Después graficamos los puntos agregando estéticas extras.
+  # Con geom_jitter() los puntos se esparcen un poco para que no se confundan entre sí
+  geom_jitter(aes(color = country_of_origin, shape = country_of_origin), width = 0.05) +
+  # Crear facetas. Además, agregarles un título general, en este caso 'Nivel de altitud'
+  ggh4x::facet_nested("Nivel de altitud" + altitude ~ .) +
+  # Cambiamos los colores que aparecen en la leyenda
+  scale_colour_manual(
+    values = c(
+      "México" = "deeppink2",
+      "Brasil" = "#009739",
+      "Colombia" = "#003087",
+      "Guatemala" = "#70b4e6"
+    )
+  ) +
+  # Etiquetas y títulos
+  labs(
+    title = "Relación de Altitudes por Mes de Expiración",
+    subtitle = "Granos de México, Brasil, Colombia, Guatemala en los años de expiración 2016 y 2017",
+    x = "Mes de expiración",
+    y = "Altitud en metros",
+    color = "País de origen",
+    shape = "País de origen"
+  ) +
+  # Reducir espacio entre paneles y rotar etiquetas del eje x
+  theme(
+    panel.spacing = unit(0.2, units = "lines"),
+    axis.text.x = element_text(angle = 90, vjust = 0.3, hjust = 1)
+  )
+```
+
+# Actividad 10
+
+Elabore una visualización con `ggplot2` que relacione el `aftertaste`, `acidity`, `body` y `species` en un mismo canvas.
+
+```{r}
+# Preparación de datos
+datos_act10 <- datos %>%
+  select(aftertaste, acidity, body, species) %>%
+  filter(!is.na(species)) %>%
+  filter(aftertaste > 0, acidity > 0, body > 0)
+
+# Construcción del gráfico
+graf_act10 <- ggplot(datos_act10, aes(x = acidity, y = aftertaste)) +
+  # Puntos con transparencia para manejar el solapamiento (overplotting)
+  geom_point(aes(color = body),
+             stroke = 0.2,
+             alpha = 0.4,
+             size = 3) +
+  # Tendencia estadística
+  geom_smooth(
+    method = "lm",
+    formula = y ~ x,
+    color = "black",
+    linewidth = 0.5,
+    se = TRUE,
+    fill = "gray80",
+    linetype = "dashed"
+  )+
+  facet_wrap( ~ species, nrow = 1)+
+  # Escala de color continua
+  scale_color_viridis_c(option = "plasma") +
+  # Etiquetas
+  labs(
+    title = "Relación entre Acidez, Sabor Residual y Cuerpo por Especie de Café",
+    subtitle = "Análisis de dispersión con ajuste lineal por mínimos cuadrados",
+    x = "Puntaje de Acidez (Acidity)",
+    y = "Puntaje de Sabor Residual (Aftertaste)",
+    color = "Puntaje del Cuerpo (Body)"
+  ) +
+  # Tema
+  theme_minimal(base_size = 11, base_family = "sans")+
+  theme(
+    # Títulos y subtítulos
+    plot.title = element_text(face = "bold", size = 13, hjust = 0, margin = margin(b = 5)),
+    plot.subtitle = element_text(color = "gray30", size = 10, margin = margin(b = 15)),
+
+    # Ejes
+    axis.line = element_line(color = "black", linewidth = 0.4),
+    axis.title = element_text(color = "gray20", face = "plain", size = 10),
+    axis.text = element_text(color = "gray20", size = 9),
+
+    # Elimina líneas secundarias
+    panel.grid.minor = element_blank(),
+
+    # Facetas
+    strip.text = element_text(face = "bold.italic", size = 11, color = "white"),
+    strip.background = element_rect(fill = "gray20", color = NA),
+
+    # Leyendas
+    legend.position = "bottom",
+    legend.box = "horizontal",
+    legend.title = element_text(size = 9, color = "gray20"),
+    legend.text = element_text(size = 8, color = "gray20")
+  )
+
+graf_act10
+```
+

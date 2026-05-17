@@ -22,5 +22,8 @@ venv/
 .DS_Store
 Thumbs.db
 
-# Secrets
+# API Key
 .env
+
+# _files repetido
+03-coffee-ratings/parte3-coffee-ratings_files

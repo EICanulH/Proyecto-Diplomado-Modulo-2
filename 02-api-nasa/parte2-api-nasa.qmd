@@ -9,9 +9,16 @@ author:
 format: html
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  results = "hold"
+)
+```
+
 ```{r}
 #| echo: false
 #| include: false
+# Cómo ejecutar este chunk, o si es necesario ejecutarlo, dependerá de su instalación de Python
 library(reticulate)
 # Seleccionamos el environment de python que vamos a utilizar
 nombre_env = "diplomadov2"
