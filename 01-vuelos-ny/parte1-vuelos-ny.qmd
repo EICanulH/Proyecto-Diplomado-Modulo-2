@@ -280,6 +280,8 @@ SELECT
     v.origin,
     a.name,
     COUNT(*) AS num_vuelos,
+    STDEV(v.dep_delay) AS sd,
+    MIN(v.dep_delay) AS minimo,
     AVG(v.dep_delay) AS promedio,
     MIN(v.dep_delay) AS minimo,
     MAX(v.dep_delay) AS maximo

@@ -733,21 +733,23 @@ window.Quarto = {
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    v.origin,</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    a.name,</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">AS</span> num_vuelos,</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">AVG</span>(v.dep_delay) <span class="kw">AS</span> promedio,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    STDEV(v.dep_delay) <span class="kw">AS</span> sd,</span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">MIN</span>(v.dep_delay) <span class="kw">AS</span> minimo,</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">MAX</span>(v.dep_delay) <span class="kw">AS</span> maximo</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> vuelos <span class="kw">AS</span> v</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> aeropuertos <span class="kw">AS</span> a</span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ON</span> v.origin <span class="op">=</span> a.faa</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> v.dep_delay <span class="op">&gt;</span> <span class="dv">0</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> v.origin, a.name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">AVG</span>(v.dep_delay) <span class="kw">AS</span> promedio,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">MIN</span>(v.dep_delay) <span class="kw">AS</span> minimo,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">MAX</span>(v.dep_delay) <span class="kw">AS</span> maximo</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> vuelos <span class="kw">AS</span> v</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> aeropuertos <span class="kw">AS</span> a</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ON</span> v.origin <span class="op">=</span> a.faa</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> v.dep_delay <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> v.origin, a.name;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>solucion03_SQL</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["origin"],"name":[1],"type":["chr"],"align":["left"]},{"label":["name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["num_vuelos"],"name":[3],"type":["int"],"align":["right"]},{"label":["promedio"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["minimo"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["maximo"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"EWR","2":"Newark Liberty Intl","3":"52711","4":"38.98792","5":"1","6":"1126"},{"1":"JFK","2":"John F Kennedy Intl","3":"42031","4":"38.04677","5":"1","6":"1301"},{"1":"LGA","2":"La Guardia","3":"33690","4":"41.63096","5":"1","6":"911"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["origin"],"name":[1],"type":["chr"],"align":["left"]},{"label":["name"],"name":[2],"type":["chr"],"align":["left"]},{"label":["num_vuelos"],"name":[3],"type":["int"],"align":["right"]},{"label":["sd"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["minimo"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["promedio"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["minimo"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["maximo"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"EWR","2":"Newark Liberty Intl","3":"52711","4":"52.58948","5":"1","6":"38.98792","7":"1","8":"1126"},{"1":"JFK","2":"John F Kennedy Intl","3":"42031","4":"53.49873","5":"1","6":"38.04677","7":"1","8":"1301"},{"1":"LGA","2":"La Guardia","3":"33690","4":"57.73296","5":"1","6":"41.63096","7":"1","8":"911"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
