@@ -14,7 +14,7 @@
     "href": "index.html#contenido",
     "title": "Proyecto Módulo 2",
     "section": "",
-    "text": "Primera parte (R): Vuelos de NYC\n        Análisis exploratorio de la base de datos de nycflights13 (vuelos que salieron de Nueva York en 2013) con verbos de dplyr y consultas de SQL.\n        Ver\n      \n    \n  \n  \n    \n      \n        Segunda parte (Python): API APOD de la NASA\n        Realización de consultas con la API Astronomy Picture of the Day (APOD) de la NASA.\n        Ver\n      \n    \n  \n  \n    \n      \n        Tercera parte (R y Python): Calidad del café\n        Análisis de valores faltantes, manipulación y visualización de los datos Coffee Ratings.\n        Ver",
+    "text": "Primera parte (R): Vuelos de NYC\n        Análisis exploratorio de la base de datos nycflights13 (vuelos que salieron de Nueva York en 2013) con verbos de dplyr y consultas de SQL.\n        Ver\n      \n    \n  \n  \n    \n      \n        Segunda parte (Python): API APOD de la NASA\n        Realización de consultas con la API Astronomy Picture of the Day (APOD) de la NASA.\n        Ver\n      \n    \n  \n  \n    \n      \n        Tercera parte (R y Python): Calidad del café\n        Análisis de valores faltantes, manipulación y visualización de los datos Coffee Ratings.\n        Ver",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Índice</span>"
     ]

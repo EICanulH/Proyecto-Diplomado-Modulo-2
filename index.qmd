@@ -21,7 +21,7 @@ Proyecto del Módulo 2 del Diplomado Introducción Analítica a la Ciencia de Da
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Primera parte (R): Vuelos de NYC</h5>
-        <p class="card-text">Análisis exploratorio de la base de datos de <code>nycflights13</code> (vuelos que salieron de Nueva York en 2013) con verbos de <code>dplyr</code> y consultas de SQL.</p>
+        <p class="card-text">Análisis exploratorio de la base de datos <code>nycflights13</code> (vuelos que salieron de Nueva York en 2013) con verbos de <code>dplyr</code> y consultas de SQL.</p>
         <a href=01-vuelos-ny\parte1-vuelos-ny.qmd class="btn btn-primary">Ver</a>
       </div>
     </div>
