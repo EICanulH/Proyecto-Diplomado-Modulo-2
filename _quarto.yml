@@ -5,10 +5,10 @@ project:
 book:
   title: "Proyecto Módulo 2"
   author: 
-  - "Diego Betancourt Peralta"
   - "Brenda Poulette Torres Vargas"
-  - "José Omar Gutiérrez Gutiérrez"
+  - "Diego Betancourt Peralta"
   - "Erick Iván Canul Hernández"
+  - "José Omar Gutiérrez Gutiérrez"
   - "Maximiliano Hernández Pérez"
   date: today
   date-format: "MMMM D, YYYY"
