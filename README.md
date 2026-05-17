@@ -12,7 +12,7 @@ Integrantes del equipo:
 
 Sitio web del proyecto: https://eicanulh.github.io/Proyecto-Diplomado-Modulo-2/
 
-Los notebooks utilizados para crear el notebook:
+Los notebooks utilizados para crear el sitio web:
 
 1. [Vuelos Nueva York](01-vuelos-ny/)
 2. [API de la NASA](02-api-nasa/)
