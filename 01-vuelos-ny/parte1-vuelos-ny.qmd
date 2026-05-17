@@ -1292,3 +1292,7 @@ ggplot(solucion20_R, aes(x = rango_humid , y = taxi_out_promedio)) +
 Después de analizar las tablas y la visualización podemos concluir que sí, la alta humedad se relaciona con tiempos de taxi-out más largos, especialmente en condiciones extremas, con más de 70% de humedad.
 
 Esto hace sentido, ya que una alta humedad se deriva por la presencia de niebla, lluvia intensa o tormentas que suelen provocar saturación en las pistas y retrasos en las maniobras de despegue, aumentando así el tiempo de taxi-out.
+
+```{r}
+dbDisconnect(conn)
+```
