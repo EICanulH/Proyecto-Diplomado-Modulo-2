@@ -14,6 +14,6 @@ Sitio web del proyecto: https://eicanulh.github.io/Proyecto-Diplomado-Modulo-2/
 
 Los notebooks utilizados para crear el notebook:
 
-1. [Vuelos Nueva York]("01 - Vuelos NY/")
-2. API de la NASA
-3. *Coffee Ratings*
+1. [Vuelos Nueva York](01-vuelos-ny/)
+2. [API de la NASA](02-api-nasa/)
+3. [*Coffee Ratings*](03-coffee-ratings/)
