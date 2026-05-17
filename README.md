@@ -13,3 +13,7 @@ Integrantes del equipo:
 Sitio web del proyecto: https://eicanulh.github.io/Proyecto-Diplomado-Modulo-2/
 
 Los notebooks utilizados para crear el notebook:
+
+1. [Vuelos Nueva York]("01 - Vuelos NY/")
+2. API de la NASA
+3. *Coffee Ratings*
