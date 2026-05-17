@@ -6,14 +6,13 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Diego Betancourt Peralta">
 <meta name="author" content="Brenda Poulette Torres Vargas">
-<meta name="author" content="José Omar Gutiérrez Gutiérrez">
+<meta name="author" content="Diego Betancourt Peralta">
 <meta name="author" content="Erick Iván Canul Hernández">
+<meta name="author" content="José Omar Gutiérrez Gutiérrez">
 <meta name="author" content="Maximiliano Hernández Pérez">
-<meta name="dcterms.date" content="2026-05-17">
 
-<title>Proyecto Módulo 2</title>
+<title>Tercera parte (R y Python): Calidad del café – Proyecto Módulo 2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -29,27 +28,27 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./01-vuelos-ny/parte1-vuelos-ny.html" rel="next">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-a14e345711173c227b21482e2eb4cc70.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-707710bb7a0eddacf54b96aa728de139.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-b3e2e376551a52e9d1d4ce5f511c1c45.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-1a5930c75df90a227b82a0867ebf4a4d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../02-api-nasa/parte2-api-nasa.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-a14e345711173c227b21482e2eb4cc70.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-707710bb7a0eddacf54b96aa728de139.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b3e2e376551a52e9d1d4ce5f511c1c45.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-1a5930c75df90a227b82a0867ebf4a4d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -81,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating fullcontent quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
+<body class="nav-sidebar floating quarto-dark"><script id="quarto-html-before-body" type="application/javascript">
     const toggleBodyColorMode = (bsSheetEl) => {
       const mode = bsSheetEl.getAttribute("data-mode");
       const bodyEl = window.document.querySelector("body");
@@ -259,7 +258,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-title">Índice</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../03-coffee-ratings/parte3-coffee-ratings.html"><span class="chapter-title">Tercera parte (R y Python): Calidad del café</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -273,10 +272,10 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="./index.html" class="sidebar-logo-link">
+      <a href="../index.html" class="sidebar-logo-link">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Proyecto Módulo 2</a> 
+      <a href="../">Proyecto Módulo 2</a> 
         <div class="sidebar-tools-main">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
@@ -291,22 +290,22 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Índice</span></a>
+  <a href="../index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Índice</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01-vuelos-ny/parte1-vuelos-ny.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Primera parte (R): Vuelos de NYC</span></a>
+  <a href="../01-vuelos-ny/parte1-vuelos-ny.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Primera parte (R): Vuelos de NYC</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02-api-nasa/parte2-api-nasa.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Segunda parte (Python): API APOD de la NASA</span></a>
+  <a href="../02-api-nasa/parte2-api-nasa.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Segunda parte (Python): API APOD de la NASA</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03-coffee-ratings/parte3-coffee-ratings.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Tercera parte (R y Python): Calidad del café</span></a>
+  <a href="../03-coffee-ratings/parte3-coffee-ratings.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Tercera parte (R y Python): Calidad del café</span></a>
   </div>
 </li>
     </ul>
@@ -314,14 +313,22 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#instrucciones" id="toc-instrucciones" class="nav-link active" data-scroll-target="#instrucciones">Instrucciones:</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Proyecto Módulo 2</h1>
+<h1 class="title">Tercera parte (R y Python): Calidad del café</h1>
 </div>
 
 
@@ -331,20 +338,14 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Authors</div>
     <div class="quarto-title-meta-contents">
-             <p>Diego Betancourt Peralta </p>
              <p>Brenda Poulette Torres Vargas </p>
-             <p>José Omar Gutiérrez Gutiérrez </p>
+             <p>Diego Betancourt Peralta </p>
              <p>Erick Iván Canul Hernández </p>
+             <p>José Omar Gutiérrez Gutiérrez </p>
              <p>Maximiliano Hernández Pérez </p>
           </div>
   </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">May 17, 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -354,38 +355,23 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Proyecto del Módulo 2 del Diplomado Introducción Analítica a la Ciencia de Datos, edición 2026</p>
-<section id="contenido" class="level2">
-<h2 class="anchored" data-anchor-id="contenido">Contenido</h2>
-<div class="row">
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title anchored">Primera parte (R): Vuelos de NYC</h5>
-        <p class="card-text">Análisis exploratorio de la base de datos de <code>nycflights13</code> (vuelos que salieron de Nueva York en 2013) con verbos de <code>dplyr</code> y consultas de SQL.</p>
-        <a href="./01-vuelos-ny/parte1-vuelos-ny.html" class="btn btn-primary">Ver</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title anchored">Segunda parte (Python): API APOD de la NASA</h5>
-        <p class="card-text">Realización de consultas con la API <i>Astronomy Picture of the Day</i> (<i>APOD</i>) de la NASA.</p>
-        <a href="./02-api-nasa/parte2-api-nasa.html" class="btn btn-primary">Ver</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title anchored">Tercera parte (R y Python): Calidad del café</h5>
-        <p class="card-text">Análisis de valores faltantes, manipulación y visualización de los datos <i>Coffee Ratings</i>.</p>
-        <a href="./03-coffee-ratings/parte3-coffee-ratings.html" class="btn btn-primary">Ver</a>
-      </div>
-    </div>
-  </div>
-</div>
+<section id="instrucciones" class="level1">
+<h1>Instrucciones:</h1>
+<p>Se usará el conjunto de datos de encuesta de café (<code>coffee_ratings.csv</code>).</p>
+<ul>
+<li>Actividad 0: Realice un análisis de valores faltantes del objeto <code>datos</code></li>
+<li>Actividad 1: Crear una columna llamada <code>color2</code> que se base en los valores de la columna <code>color</code>, que asigne el valor NA si <code>color == NA</code>, “#00FF66” si <code>color == 'Green'</code>, “#CCEBC5” si <code>color == 'Bluish-green'</code> y “#BFFFFF” si <code>color == 'Blue-green'</code></li>
+<li>Actividad 2: Crear una columna llamada <code>bag_weight2</code> que se base en los valores de la columna <code>bag_weight</code>, que sólo contenga el valor numérico de ésta. Es decir, <code>bag_weight2</code> debe ser numérica. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?</li>
+<li>Actividad 3: Crear dos columnas llamadas <code>method1</code> y <code>method2</code> que se basen en los valores de la columna <code>processing_method</code>, dividiendo en dos partes los valores dicha columna. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?</li>
+<li>Actividad 4: Crear tres columnas llamadas <code>expiration_day</code>, <code>expiration_month</code> y <code>expiration_year</code> que se basen en los valores de la columna <code>expiration</code>. ¿Cuántas observaciones llevaron a ambigüedad para crear estas nuevas columnas?</li>
+<li>Actividad 5: Crear dos columnas llamadas <code>harvest_mes</code> y <code>harvest_anio</code> que se basen en los valores de la columna <code>harvest_year</code>, dividiendo en dos partes los valores dicha columna. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?</li>
+<li>Actividad 6: Elabore una visualización con <code>ggplot2</code> que identifique alguna relación entre las columnas total_cup_points, acidity y color2 de tal forma que se puedan identificar los colores de la variable <code>color2</code>. Es decir, debemos ver los colores, “#00FF66”, “#CCEBC5” y “#BFFFFF”.</li>
+<li>Actividad 7: Elabore una visualización de densidad con <code>ggplot2</code> de la variable <code>bag_weight2</code> diferenciando a los valores de <code>species</code>.</li>
+<li>Actividad 8: Elabore una visualización que relacione el año/mes de expiración con el <code>total_cup_points</code> sólo de los granos mexicanos, brasileños, colombianos y guatemaltecos.</li>
+<li>Actividad 9: Elabore una visualización con <code>ggplot2</code> que relacione el mes de expiración con el <code>altitude_mean_meters</code>, <code>altitude_low_meters</code> y <code>altitude_high_meters</code> sólo de los granos mexicanos, brasileños, colombianos y guatemaltecos de los años de expiración 2016 y 2017.</li>
+<li>Actividad 10: Elabore una visualización con <code>ggplot2</code> que relacione el <code>aftertaste</code>, <code>acidity</code>, <code>body</code> y <code>species</code> en un mismo canvas.</li>
+</ul>
+<p><em>Importante:</em> Sus visualizaciones deben tener formato suficientemente bueno para publicar en alguna revista.</p>
 
 
 </section>
@@ -806,11 +792,11 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../02-api-nasa/parte2-api-nasa.html" class="pagination-link" aria-label="Segunda parte (Python): API APOD de la NASA">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Segunda parte (Python): API APOD de la NASA</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01-vuelos-ny/parte1-vuelos-ny.html" class="pagination-link" aria-label="Primera parte (R): Vuelos de NYC">
-        <span class="nav-page-text"><span class="chapter-title">Primera parte (R): Vuelos de NYC</span></span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

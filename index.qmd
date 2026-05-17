@@ -40,7 +40,7 @@ Proyecto del Módulo 2 del Diplomado Introducción Analítica a la Ciencia de Da
       <div class="card-body">
         <h5 class="card-title">Tercera parte (R y Python): Calidad del café</h5>
         <p class="card-text">Análisis de valores faltantes, manipulación y visualización de los datos <i>Coffee Ratings</i>.</p>
-        <a href=# class="btn btn-primary">Ver</a>
+        <a href=03-coffee-ratings\parte3-coffee-ratings.qmd class="btn btn-primary">Ver</a>
       </div>
     </div>
   </div>
