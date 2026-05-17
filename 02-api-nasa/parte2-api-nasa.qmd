@@ -1,5 +1,5 @@
 ---
-title: "Segunda parte - Python: API APOD de la NASA"
+title: "Segunda parte (Python): API APOD de la NASA"
 author:
   - "Brenda Poulette Torres Vargas"
   - "Diego Betancourt Peralta"
