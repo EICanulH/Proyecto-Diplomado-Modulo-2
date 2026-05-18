@@ -1255,7 +1255,7 @@ for ax in g.axes.flat:
     ax.tick_params(axis="x", rotation=90)
     
 plt.show()
-plt.close();
+plt.close()
 ```
 
 # Actividad 10
