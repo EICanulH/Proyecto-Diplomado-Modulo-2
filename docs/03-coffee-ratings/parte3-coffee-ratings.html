@@ -479,8 +479,8 @@ code.sourceCode.python::before{content:'Python'; float:right}
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> make_interp_spline</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>plt.ioff()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;contextlib.ExitStack object at 0x0000024242DF0050&gt;
-&lt;contextlib.ExitStack object at 0x0000024245C28E10&gt;</code></pre>
+<pre><code>&lt;contextlib.ExitStack object at 0x0000027BAA1C0050&gt;
+&lt;contextlib.ExitStack object at 0x0000027BAD034B90&gt;</code></pre>
 </div>
 </div>
 <p>Se usará el conjunto de datos de encuesta de café <code>coffee_ratings.csv</code></p>
@@ -846,6 +846,7 @@ Semi-washed / Semi-pulped    Semi-washed Semi-pulped
 <section id="actividad-4" class="level1">
 <h1>Actividad 4</h1>
 <p>Crear tres columnas llamadas <code>expiration_day</code>, <code>expiration_month</code> y <code>expiration_year</code> que se basen en los valores de la columna <code>expiration</code>. ¿Cuántas observaciones llevaron a ambigüedad para crear estas nuevas columnas?</p>
+<p><strong>R</strong></p>
 <p>Primero revisemos si hay algún valor faltante:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anyNA</span>(datos<span class="sc">$</span>expiration)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1003,6 +1004,7 @@ Semi-washed / Semi-pulped    Semi-washed Semi-pulped
 <section id="actividad-5" class="level1">
 <h1>Actividad 5</h1>
 <p>Crear dos columnas llamadas <code>harvest_mes</code> y <code>harvest_anio</code> que se basen en los valores de la columna <code>harvest_year</code>, dividiendo en dos partes los valores dicha columna. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?</p>
+<p><strong>R</strong></p>
 <p>Primero revisemos si hay valores faltantes en la columna <code>harvest_year</code></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ¿Cuantos valores faltantes contiene?</span></span>
@@ -1250,6 +1252,7 @@ tipos: 47</code></pre>
 <section id="actividad-6" class="level1">
 <h1>Actividad 6</h1>
 <p>Elabore una visualización con <code>ggplot2</code> que identifique alguna relación entre las columnas total_cup_points, acidity y color2 de tal forma que se puedan identificar los colores de la variable color2. Es decir, debemos ver los colores, “#00FF66”, “#CCEBC5” y “#BFFFFF”.</p>
+<p><strong>R</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">%&gt;%</span></span>
 <span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(color2) <span class="sc">&amp;</span> acidity <span class="sc">!=</span> <span class="dv">0</span> <span class="sc">&amp;</span> total_cup_points <span class="sc">!=</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span></span>
@@ -1343,6 +1346,7 @@ acidity                   0.797024  1.000000</code></pre>
 <section id="actividad-7" class="level1">
 <h1>Actividad 7</h1>
 <p>Elabore una visualización de densidad con <code>ggplot2</code> de la variable <code>bag_weight2</code> diferenciando a los valores de <code>species</code>.</p>
+<p><strong>R</strong></p>
 <p>A partir del resumen descriptivo <code>summary(datos$bagweight2)</code>, observamos una distribución asimétrica con valores extremadamente grandes. El 75% de los datos es menor o igual a 69 kg, mientras que hay valores por encima de los 1000 kg, generando una diferencia en la escala de los datos.</p>
 <p>Es por ello que se decidió utilizar una escala logarítmica en el eje <code>x</code>, esto permitió reducir este efecto de valores extremos y mejorar la visibilización del gráfico. Dado que <code>log(0)</code> es indefinido, las observaciones con valor igual a 0 (4 observaciones) no fueron consideradas dentro de la transformación logarítmica, para fines prácticos.</p>
 <p>Con esto, podemos observar dos principales concentraciones de pesos de bolsa: entre 1 a 4 kg, y otra entre 50 a 100 kg. Siendo la especie <em>Arabica</em> aquella con menor dispersión, es decir pesos más estandarizados mientras que la especie <em>Robusta</em>, tiene pesos con mayor variación.</p>
@@ -1409,6 +1413,7 @@ acidity                   0.797024  1.000000</code></pre>
 <section id="actividad-8" class="level1">
 <h1>Actividad 8</h1>
 <p>Elabore una visualización que relacione el año/mes de expiración con el <code>total_cup_points</code> sólo de los granos mexicanos, brasileños, colombianos y guatemaltecos.</p>
+<p><strong>R</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>paises <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Mexico"</span>, <span class="st">"Brazil"</span>, <span class="st">"Colombia"</span>, <span class="st">"Guatemala"</span>)</span>
 <span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>colores <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
@@ -1529,6 +1534,7 @@ Conteo por país:
       132       183       181       236 </code></pre>
 </div>
 </div>
+<p><strong>Python</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>datos[<span class="st">"expiration_parsed"</span>] <span class="op">=</span> pd.to_datetime(</span>
 <span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>    datos[<span class="st">"expiration"</span>].<span class="bu">str</span>.replace(<span class="vs">r"</span><span class="kw">(</span><span class="dv">\d</span><span class="op">+</span><span class="kw">)(</span><span class="vs">st</span><span class="cf">|</span><span class="vs">nd</span><span class="cf">|</span><span class="vs">rd</span><span class="cf">|</span><span class="vs">th</span><span class="kw">)</span><span class="vs">"</span>, <span class="vs">r"</span><span class="ch">\1</span><span class="vs">"</span>, regex<span class="op">=</span><span class="va">True</span>),</span>
@@ -1650,6 +1656,7 @@ Conteo por país:
 <section id="actividad-9" class="level1">
 <h1>Actividad 9</h1>
 <p>Elabore una visualización con <code>ggplot2</code> que relacione el mes de expiración con el <code>altitude_mean_meters</code>, <code>altitude_low_meters</code> y <code>altitude_high_meters</code> sólo de los granos mexicanos, brasileños, colombianos y guatemaltecos de los años de expiración 2016 y 2017.</p>
+<p><strong>R</strong></p>
 <p>Vamos a crear un dataframe que utilizaremos para crear la gráfica llamado <code>datos_altitud</code>.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>datos_altitud <span class="ot">&lt;-</span> datos <span class="sc">|&gt;</span></span>
@@ -1735,6 +1742,7 @@ Conteo por país:
 </div>
 </div>
 </div>
+<p><strong>Python</strong></p>
 <p>Copiamos el dataframe <code>datos_altitud</code> de R a un dataframe de pandas.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>datos_altitud <span class="op">=</span> r.datos_altitud</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1865,6 +1873,7 @@ Conteo por país:
 <section id="actividad-10" class="level1">
 <h1>Actividad 10</h1>
 <p>Elabore una visualización con <code>ggplot2</code> que relacione el <code>aftertaste</code>, <code>acidity</code>, <code>body</code> y <code>species</code> en un mismo canvas.</p>
+<p><strong>R</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparación de datos</span></span>
 <span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>datos_act10 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
@@ -1935,6 +1944,7 @@ Conteo por país:
 </div>
 </div>
 </div>
+<p><strong>Python</strong></p>
 <p>Se optó por guardar la siguiente gráfica en un archivo png y referenciarla desde markdown, debido a que quarto la renderiza e imprime tres veces en el html.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb92"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparación de datos</span></span>

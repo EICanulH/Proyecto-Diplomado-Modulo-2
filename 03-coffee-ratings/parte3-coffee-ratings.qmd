@@ -378,6 +378,8 @@ print(
 
 Crear tres columnas llamadas `expiration_day`, `expiration_month` y `expiration_year` que se basen en los valores de la columna `expiration`. ¿Cuántas observaciones llevaron a ambigüedad para crear estas nuevas columnas?
 
+**R**
+
 Primero revisemos si hay algún valor faltante:
 
 ```{r}
@@ -495,6 +497,8 @@ datos[["expiration", "expiration_day", "expiration_month", "expiration_year"]].h
 # Actividad 5
 
 Crear dos columnas llamadas `harvest_mes` y `harvest_anio` que se basen en los valores de la columna `harvest_year`, dividiendo en dos partes los valores dicha columna. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?
+
+**R**
 
 Primero revisemos si hay valores faltantes en la columna `harvest_year`
 
@@ -711,6 +715,8 @@ En conclusión, hay 1,333 observaciones en la columna `harvest_year` que generan
 
 Elabore una visualización con `ggplot2` que identifique alguna relación entre las columnas total_cup_points, acidity y color2 de tal forma que se puedan identificar los colores de la variable color2. Es decir, debemos ver los colores, "#00FF66", "#CCEBC5" y "#BFFFFF".
 
+**R**
+
 ```{r}
 datos %>%
   dplyr::filter(!is.na(color2) & acidity != 0 & total_cup_points != 0) %>%
@@ -790,6 +796,8 @@ datos[['total_cup_points', 'acidity']].corr()
 
 Elabore una visualización de densidad con `ggplot2` de la variable `bag_weight2` diferenciando a los valores de `species`.
 
+**R**
+
 A partir del resumen descriptivo `summary(datos$bagweight2)`, observamos una distribución asimétrica con valores extremadamente grandes. El 75% de los datos es menor o igual a 69 kg, mientras que hay valores por encima de los 1000 kg, generando una diferencia en la escala de los datos.
 
 Es por ello que se decidió utilizar una escala logarítmica en el eje `x`, esto permitió reducir este efecto de valores extremos y mejorar la visibilización del gráfico. Dado que `log(0)` es indefinido, las observaciones con valor igual a 0 (4 observaciones) no fueron consideradas dentro de la transformación logarítmica, para fines prácticos.
@@ -845,6 +853,8 @@ plt.close()
 # Actividad 8
 
 Elabore una visualización que relacione el año/mes de expiración con el `total_cup_points` sólo de los granos mexicanos, brasileños, colombianos y guatemaltecos.
+
+**R**
 
 ```{r}
 paises <- c("Mexico", "Brazil", "Colombia", "Guatemala")
@@ -953,6 +963,8 @@ cat(sprintf("Registros graficados: %d\n", nrow(datos_act8)))
 cat("\nConteo por país:\n")
 print(table(datos_act8$country_of_origin))
 ```
+
+**Python**
 
 ```{python}
 datos["expiration_parsed"] = pd.to_datetime(
@@ -1070,6 +1082,8 @@ plt.close()
 
 Elabore una visualización con `ggplot2` que relacione el mes de expiración con el `altitude_mean_meters`, `altitude_low_meters` y `altitude_high_meters` sólo de los granos mexicanos, brasileños, colombianos y guatemaltecos de los años de expiración 2016 y 2017.
 
+**R**
+
 Vamos a crear un dataframe que utilizaremos para crear la gráfica llamado `datos_altitud`.
 
 ```{r}
@@ -1145,6 +1159,8 @@ datos_altitud |>
     axis.text.x = element_text(angle = 90, vjust = 0.3, hjust = 1)
   )
 ```
+
+**Python**
 
 Copiamos el dataframe `datos_altitud` de R a un dataframe de pandas.
 
@@ -1287,6 +1303,8 @@ plt.show()
 
 Elabore una visualización con `ggplot2` que relacione el `aftertaste`, `acidity`, `body` y `species` en un mismo canvas.
 
+**R**
+
 ```{r}
 # Preparación de datos
 datos_act10 <- datos %>%
@@ -1350,6 +1368,8 @@ graf_act10 <- ggplot(datos_act10, aes(x = acidity, y = aftertaste)) +
 
 graf_act10
 ```
+
+**Python**
 
 Se optó por guardar la siguiente gráfica en un archivo png y referenciarla desde markdown, debido a que quarto la renderiza e imprime tres veces en el html.
 
