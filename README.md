@@ -18,4 +18,4 @@ Documentos de Quarto:
 
 Los datos utilizados en la realización de este proyecto se encuentran en la carpeta [datos](datos/).
 
-Sitio web creado con los documentos de quarto: https://eicanulh.github.io/Proyecto-Diplomado-Modulo-2/
+Sitio web creado con los documentos de Quarto: https://eicanulh.github.io/Proyecto-Diplomado-Modulo-2/
