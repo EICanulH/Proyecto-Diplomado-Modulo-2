@@ -275,6 +275,10 @@ datos <- datos %>%
   )
 ```
 
+```{r}
+datos %>% distinct(bag_weight,bag_weight2)
+```
+
 **Python**
 
 ```{python}
@@ -286,6 +290,14 @@ datos["bag_weight2"] = np.where(
     num * 0.453592,
     num,
 )
+```
+
+```{python}
+bagweight = datos[['bag_weight', 'bag_weight2']].drop_duplicates()
+```
+
+```{r}
+py$bagweight
 ```
 
 # Actividad 3
