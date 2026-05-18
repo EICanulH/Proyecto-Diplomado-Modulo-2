@@ -34,7 +34,7 @@ Se usará el conjunto de datos de encuesta de café (`coffee_ratings.csv`).
 -   Actividad 3: Crear dos columnas llamadas `method1` y `method2` que se basen en los valores de la columna `processing_method`, dividiendo en dos partes los valores dicha columna. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?
 -   Actividad 4: Crear tres columnas llamadas `expiration_day`, `expiration_month` y `expiration_year` que se basen en los valores de la columna `expiration`. ¿Cuántas observaciones llevaron a ambigüedad para crear estas nuevas columnas?
 -   Actividad 5: Crear dos columnas llamadas `harvest_mes` y `harvest_anio` que se basen en los valores de la columna `harvest_year`, dividiendo en dos partes los valores dicha columna. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?
--   Actividad 6: Elabore una visualización con `ggplot2` que identifique alguna relación entre las columnas total_cup_points, acidity y color2 de tal forma que se puedan identificar los colores de la variable `color2`. Es decir, debemos ver los colores, "#00FF66", "#CCEBC5" y "#BFFFFF".
+-   Actividad 6: Elabore una visualización con `ggplot2` que identifique alguna relación entre las columnas `total_cup_points`, `acidity` y `color2` de tal forma que se puedan identificar los colores de la variable `color2`. Es decir, debemos ver los colores, "#00FF66", "#CCEBC5" y "#BFFFFF".
 -   Actividad 7: Elabore una visualización de densidad con `ggplot2` de la variable `bag_weight2` diferenciando a los valores de `species`.
 -   Actividad 8: Elabore una visualización que relacione el año/mes de expiración con el `total_cup_points` sólo de los granos mexicanos, brasileños, colombianos y guatemaltecos.
 -   Actividad 9: Elabore una visualización con `ggplot2` que relacione el mes de expiración con el `altitude_mean_meters`, `altitude_low_meters` y `altitude_high_meters` sólo de los granos mexicanos, brasileños, colombianos y guatemaltecos de los años de expiración 2016 y 2017.
@@ -98,7 +98,7 @@ También los cargamos en python:
 datos = pd.read_csv("../datos/coffee_ratings.csv")
 ```
 
-Preferemos imprimir dataframes de pandas grandes desde R para una mejor visualización. Observe la diferencia:
+Preferimos imprimir dataframes de pandas grandes desde R para una mejor visualización. Observe la diferencia:
 
 ```{python}
 # pandas DataFrame
@@ -510,7 +510,7 @@ La nueva columna `harvest_anio` captura el primer año que aparece en la observa
 # Definir el patrón de meses en inglés y español
 patron_meses <- "(Jan|Ene|Feb|Mar|Apr|Abr|May|Jun|Jul|Aug|Ago|Sep|Oct|Nov|Dec|Dic)"
 
-# Crear columnas harvest_anio y harvest_mes apartir de harvest_year
+# Crear columnas harvest_anio y harvest_mes a partir de harvest_year
 datos <- datos %>%
   mutate(
     harvest_anio = case_when(
@@ -633,7 +633,7 @@ mapa_meses = {
     "Dic": "December",
 }
 
-# Crear nuevas columnas harvest_mes y harvest_anio apartir de harvest_year
+# Crear nuevas columnas harvest_mes y harvest_anio a partir de harvest_year
 
 # Extraer el año (primer grupo de 4 dígitos que detecte)
 datos["harvest_anio"] = datos["harvest_year"].str.extract(r"\b(\d{4})\b")[0]
@@ -688,7 +688,7 @@ ambiguos_act5_Py = datos[
     | datos["harvest_year"].str.contains(r"-|/| to | a |Through", na=False)
 ]
 
-# Contar ambiguedades
+# Contar ambigüedades
 total_ambiguos_act5_Py = len(ambiguos_act5_Py)
 print(f"Número de observaciones que generan ambigüedad: {total_ambiguos_act5_Py}")
 ```
@@ -1382,7 +1382,7 @@ g.fig.suptitle(
     y=1.05
 )
 
-# Titulos de los ejes
+# Títulos de los ejes
 g.set_axis_labels("Puntaje de Acidez (Acidity)","Puntaje de Sabor Residual (Aftertaste)",fontsize=10)
 
 # Personalizar cada faceta

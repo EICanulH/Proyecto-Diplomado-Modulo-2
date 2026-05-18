@@ -452,7 +452,7 @@ code.sourceCode.python::before{content:'Python'; float:right}
 <li>Actividad 3: Crear dos columnas llamadas <code>method1</code> y <code>method2</code> que se basen en los valores de la columna <code>processing_method</code>, dividiendo en dos partes los valores dicha columna. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?</li>
 <li>Actividad 4: Crear tres columnas llamadas <code>expiration_day</code>, <code>expiration_month</code> y <code>expiration_year</code> que se basen en los valores de la columna <code>expiration</code>. ¿Cuántas observaciones llevaron a ambigüedad para crear estas nuevas columnas?</li>
 <li>Actividad 5: Crear dos columnas llamadas <code>harvest_mes</code> y <code>harvest_anio</code> que se basen en los valores de la columna <code>harvest_year</code>, dividiendo en dos partes los valores dicha columna. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?</li>
-<li>Actividad 6: Elabore una visualización con <code>ggplot2</code> que identifique alguna relación entre las columnas total_cup_points, acidity y color2 de tal forma que se puedan identificar los colores de la variable <code>color2</code>. Es decir, debemos ver los colores, “#00FF66”, “#CCEBC5” y “#BFFFFF”.</li>
+<li>Actividad 6: Elabore una visualización con <code>ggplot2</code> que identifique alguna relación entre las columnas <code>total_cup_points</code>, <code>acidity</code> y <code>color2</code> de tal forma que se puedan identificar los colores de la variable <code>color2</code>. Es decir, debemos ver los colores, “#00FF66”, “#CCEBC5” y “#BFFFFF”.</li>
 <li>Actividad 7: Elabore una visualización de densidad con <code>ggplot2</code> de la variable <code>bag_weight2</code> diferenciando a los valores de <code>species</code>.</li>
 <li>Actividad 8: Elabore una visualización que relacione el año/mes de expiración con el <code>total_cup_points</code> sólo de los granos mexicanos, brasileños, colombianos y guatemaltecos.</li>
 <li>Actividad 9: Elabore una visualización con <code>ggplot2</code> que relacione el mes de expiración con el <code>altitude_mean_meters</code>, <code>altitude_low_meters</code> y <code>altitude_high_meters</code> sólo de los granos mexicanos, brasileños, colombianos y guatemaltecos de los años de expiración 2016 y 2017.</li>
@@ -479,8 +479,8 @@ code.sourceCode.python::before{content:'Python'; float:right}
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> make_interp_spline</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>plt.ioff()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;contextlib.ExitStack object at 0x0000024168C80050&gt;
-&lt;contextlib.ExitStack object at 0x000002416B934B90&gt;</code></pre>
+<pre><code>&lt;contextlib.ExitStack object at 0x0000017547100050&gt;
+&lt;contextlib.ExitStack object at 0x0000017549D34B90&gt;</code></pre>
 </div>
 </div>
 <p>Se usará el conjunto de datos de encuesta de café <code>coffee_ratings.csv</code></p>
@@ -506,7 +506,7 @@ code.sourceCode.python::before{content:'Python'; float:right}
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>datos <span class="op">=</span> pd.read_csv(<span class="st">"../datos/coffee_ratings.csv"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Preferemos imprimir dataframes de pandas grandes desde R para una mejor visualización. Observe la diferencia:</p>
+<p>Preferimos imprimir dataframes de pandas grandes desde R para una mejor visualización. Observe la diferencia:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pandas DataFrame</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>datos.head()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1027,7 +1027,7 @@ Semi-washed / Semi-pulped    Semi-washed Semi-pulped
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Definir el patrón de meses en inglés y español</span></span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>patron_meses <span class="ot">&lt;-</span> <span class="st">"(Jan|Ene|Feb|Mar|Apr|Abr|May|Jun|Jul|Aug|Ago|Sep|Oct|Nov|Dec|Dic)"</span></span>
 <span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear columnas harvest_anio y harvest_mes apartir de harvest_year</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear columnas harvest_anio y harvest_mes a partir de harvest_year</span></span>
 <span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
 <span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">harvest_anio =</span> <span class="fu">case_when</span>(</span>
@@ -1159,7 +1159,7 @@ tipos: 47</code></pre>
 <span id="cb61-21"><a href="#cb61-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Dic"</span>: <span class="st">"December"</span>,</span>
 <span id="cb61-22"><a href="#cb61-22" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb61-23"><a href="#cb61-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb61-24"><a href="#cb61-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear nuevas columnas harvest_mes y harvest_anio apartir de harvest_year</span></span>
+<span id="cb61-24"><a href="#cb61-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear nuevas columnas harvest_mes y harvest_anio a partir de harvest_year</span></span>
 <span id="cb61-25"><a href="#cb61-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-26"><a href="#cb61-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraer el año (primer grupo de 4 dígitos que detecte)</span></span>
 <span id="cb61-27"><a href="#cb61-27" aria-hidden="true" tabindex="-1"></a>datos[<span class="st">"harvest_anio"</span>] <span class="op">=</span> datos[<span class="st">"harvest_year"</span>].<span class="bu">str</span>.extract(<span class="vs">r"</span><span class="dv">\b</span><span class="kw">(</span><span class="dv">\d</span><span class="op">{4}</span><span class="kw">)</span><span class="dv">\b</span><span class="vs">"</span>)[<span class="dv">0</span>]</span>
@@ -1215,7 +1215,7 @@ tipos: 47</code></pre>
 <span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">|</span> datos[<span class="st">"harvest_year"</span>].<span class="bu">str</span>.contains(<span class="vs">r"-</span><span class="cf">|</span><span class="vs">/</span><span class="cf">|</span><span class="vs"> to </span><span class="cf">|</span><span class="vs"> a </span><span class="cf">|</span><span class="vs">Through"</span>, na<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a>]</span>
 <span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Contar ambiguedades</span></span>
+<span id="cb64-12"><a href="#cb64-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Contar ambigüedades</span></span>
 <span id="cb64-13"><a href="#cb64-13" aria-hidden="true" tabindex="-1"></a>total_ambiguos_act5_Py <span class="op">=</span> <span class="bu">len</span>(ambiguos_act5_Py)</span>
 <span id="cb64-14"><a href="#cb64-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Número de observaciones que generan ambigüedad: </span><span class="sc">{</span>total_ambiguos_act5_Py<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1952,7 +1952,7 @@ Conteo por país:
 <span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="fl">1.05</span></span>
 <span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Titulos de los ejes</span></span>
+<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Títulos de los ejes</span></span>
 <span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a>g.set_axis_labels(<span class="st">"Puntaje de Acidez (Acidity)"</span>,<span class="st">"Puntaje de Sabor Residual (Aftertaste)"</span>,fontsize<span class="op">=</span><span class="dv">10</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Personalizar cada faceta</span></span>
 <span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> g.axes.flat:</span>
