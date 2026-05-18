@@ -1,5 +1,6 @@
 ---
 title: "Índice"
+lang: es-MX
 author:
   - "Diego Betancourt Peralta"
   - "Brenda Poulette Torres Vargas"

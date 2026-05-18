@@ -1,5 +1,6 @@
 ---
 title: "Tercera parte (R y Python): Calidad del café"
+lang: es-MX
 author:
   - "Brenda Poulette Torres Vargas"
   - "Diego Betancourt Peralta"
@@ -7,6 +8,8 @@ author:
   - "José Omar Gutiérrez Gutiérrez"
   - "Maximiliano Hernández Pérez"
 format: html
+execute:
+  cache: false
 ---
 
 ```{r setup, include=FALSE}
@@ -15,7 +18,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Instrucciones:
+```{css, echo=FALSE}
+/* Agregar nombre de lenguaje de programación a cada chunk */
+code.sourceCode.r::before{content:'R'; float:right}
+code.sourceCode.python::before{content:'Python'; float:right}
+```
+
+# Instrucciones
 
 Se usará el conjunto de datos de encuesta de café (`coffee_ratings.csv`).
 
@@ -50,12 +59,24 @@ use_condaenv(nombre_env)
 repl_python()
 ```
 
-Cargamos las librerías necesarias.
+Cargamos las librerías necesarias de R y Python.
 
 ```{r}
 library(tidyverse) # Incluye dplyr, ggplot2, stringr y lubridate
 library(scales)
 library(skimr)
+```
+
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+plt.ioff()
+import matplotlib.dates as mdates
+from matplotlib.gridspec import GridSpec
+import seaborn as sns
+from scipy.interpolate import make_interp_spline
+plt.ioff()
 ```
 
 Se usará el conjunto de datos de encuesta de café `coffee_ratings.csv`
@@ -71,11 +92,34 @@ Dimensión del conjunto de datos:
 dim(datos)
 ```
 
+También los cargamos en python:
+
+```{python}
+datos = pd.read_csv("../datos/coffee_ratings.csv")
+```
+
+Preferemos imprimir dataframes de pandas grandes desde R para una mejor visualización. Observe la diferencia:
+
+```{python}
+# pandas DataFrame
+datos.head()
+```
+
+```{r}
+# Accedemos a objetos de python con la siguiente sintaxis
+py$datos |> head()
+```
+
+
+```{python}
+datos.shape
+```
+
 # Actividad 0
 
 Realice un análisis de valores faltantes del objeto `datos`
 
-Resumen de valores faltantes
+Resumen de valores faltantes en R
 
 ```{r}
 resumen <- skim(datos) %>%
@@ -92,6 +136,7 @@ resumen %>%
 Visualización de valores faltantes.
 
 ```{r}
+#| fig-height: 8
 resumen %>%
   select(skim_variable, missing_rate) %>%
   arrange(desc(missing_rate)) %>%
@@ -105,6 +150,50 @@ resumen %>%
   )
 ```
 
+**Resumen de valores faltantes en Python**
+
+```{python}
+resumen = pd.DataFrame({
+    "variable": datos.columns,
+    "n_missing": datos.isna().sum().values,
+    "missing_rate": datos.isna().mean().values
+})
+
+# Ordenar de mayor a menor porcentaje faltante
+resumen = resumen.sort_values(
+    by = "missing_rate",
+    ascending = False
+)
+
+resumen["variable"] = resumen["variable"].astype(str)
+resumen["missing_rate"] = pd.to_numeric(
+    resumen["missing_rate"]
+)
+```
+
+```{r}
+py$resumen
+```
+
+
+```{python}
+#| fig-height: 8
+sns.barplot(
+    data=resumen,
+    x="missing_rate",
+    y="variable",
+    color="hotpink"
+)
+
+plt.title("Valores faltantes por variable")
+plt.xlabel("% de faltantes")
+plt.ylabel("Variable")
+
+plt.tight_layout()
+plt.show()
+plt.close()
+```
+
 Observamos que `lot_number`  (número de lote del café evaluado) es la variable que presenta la mayor proporción de valores faltantes (79%), seguida por `farm_name` (26%) y `mill` (molino donde se procesó el café, 23%), lo que sugiere que no todas las fincas o productores documentan con el mismo nivel de detalle la información de sus lotes y procesos de molienda.
 
 Por otra parte, identificamos un patrón de ausencia conjunta en las variables geográficas relacionadas con la altitud, pues los registros con valores faltantes en `altitude_low_meters`, también presentan datos faltantes en `altitude_high_meters` y `altitude_mean_meters`. De manera similar, los registros con valores faltantes en `altitude`, tienden también a presentar valores ausentes en la variable `variety`. Lo que indica que esos faltantes no son aleatorios, sino sistemáticos.
@@ -115,7 +204,9 @@ No obstante, las variables de evaluación sensorial (`aroma`, `acidity`, `body`,
 
 Crear una columna llamada `color2` que se base en los valores de la columna `color`, que asigne el valor NA si  `color == NA`, `"#00FF66"` si `color == 'Green'`, `"#CCEBC5"` si `color == 'Bluish-green'` y `"#BFFFFF"` si `color == 'Blue-green'`
 
-Crear columna color2:
+**R**
+
+Crear columna `color2`:
 
 ```{r}
 datos$color2 <- dplyr::case_when(
@@ -133,6 +224,29 @@ Visualización de la nueva columna
 datos %>% distinct(color, color2)
 ```
 
+**Python**
+
+```{python}
+datos['color2'] = np.select(
+    [
+        datos['color'].isna(),
+        datos['color'] == "Green",
+        datos['color'] == "Bluish-Green",
+        datos['color'] == "Blue-Green"
+    ],
+    [
+        None,
+        "#00FF66",
+        "#CCEBC5",
+        "#BFFFFF"
+    ],
+    default = None
+)
+
+sub_datos = datos[['color', 'color2']].drop_duplicates()
+print(sub_datos)
+```
+
 # Actividad 2
 
 Crear una columna llamada `bag_weight2` que se base en los valores de la columna `bag_weight`, que sólo contenga el valor numérico de ésta. Es decir, `bag_weight2` debe ser numérica. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?
@@ -144,6 +258,8 @@ Obteniendo los valores únicos de la columna `bag_weight`, se identificaron vari
 - Caso (#): Las observaciones no muestran ningún tipo de medida, únicamente el valor numérico.
 
 Para estandarizar la misma unidad de medida, se decidió trabajar con kg, entonces las observaciones en lbs se multiplicaron por el factor de conversión a kg (1lb = 0.453592 kg), los demás casos permanecieron sin cambios, únicamente se extrajo su valor numérico. De esta forma se evitan mayores ambigüedades.
+
+**R**
 
 ```{r}
 datos <- datos %>%
@@ -159,9 +275,24 @@ datos <- datos %>%
   )
 ```
 
+**Python**
+
+```{python}
+num = datos["bag_weight"].str.extract(r"(\d+\.?\d*)")[0].astype(float)  # regex d/p/d
+
+datos["bag_weight2"] = np.where(
+    datos["bag_weight"].str.contains("lbs") & 
+    ~datos["bag_weight"].str.contains("kg"),
+    num * 0.453592,
+    num,
+)
+```
+
 # Actividad 3
 
 Crear dos columnas llamadas `method1` y `method2` que se basen en los valores de la columna `processing_method`, dividiendo en dos partes los valores dicha columna. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?
+
+**R**
 
 Crear columnas `method1` y `method2`:
 
@@ -195,6 +326,40 @@ cat("\nValores únicos resultantes:\n")
 datos %>%
   distinct(processing_method, method1, method2) %>%
   print()
+```
+
+**Python**
+
+```{python}
+#| results: hold
+# Dividir por '/' en máximo 2 partes
+split_cols = datos["processing_method"].str.split("/", n=1, expand=True)
+datos["method1"] = split_cols[0].str.strip()
+datos["method2"] = split_cols[1].str.strip() if 1 in split_cols.columns else np.nan
+
+# Convertir strings vacíos a NaN
+datos["method1"] = datos["method1"].replace("", np.nan)
+datos["method2"] = datos["method2"].replace("", np.nan)
+
+# Observaciones ambiguas:
+# 1. NAs originales -> no hay información para dividir
+# 2. Sin '/' -> sólo tiene una parte (e.g. "Other")
+na_originales = datos["processing_method"].isna().sum()
+sin_slash = (~datos["processing_method"].isna()) & (
+    ~datos["processing_method"].str.contains("/", na=False)
+)
+ambiguedad_act3 = na_originales + sin_slash.sum()
+
+print(f"NAs originales en processing_method : {na_originales}")
+print(f"Registros sin '/'                   : {sin_slash.sum()}")
+print(f"Total observaciones ambiguas        : {ambiguedad_act3}")
+print()
+print("Valores únicos resultantes:")
+print(
+    datos[["processing_method", "method1", "method2"]]
+    .drop_duplicates()
+    .to_string(index=False)
+)
 ```
 
 # Actividad 4
@@ -301,6 +466,20 @@ range(datos$expiration_month)
 range(datos$expiration_year)
 ```
 
+**Python**
+
+Ya vimos en la parte de R que todas las observaciones de esta columna siguen el mismo patrón, por lo que podemos usar expresiones regulares para obtener cada componente de la fecha.
+
+```{python}
+# Crear nuevas columnas llamadas expiration_day, expiration_month y expiration_year
+datos["expiration_day"] = datos["expiration"].str.extract(r"\s(\d+).*").astype(int)
+datos["expiration_month"] = datos["expiration"].str.extract(r"(\w+).*")
+datos["expiration_year"] = datos["expiration"].str.extract(r"\s(\d{4}).*").astype(int)
+
+# Vistazo al resultado
+datos[["expiration", "expiration_day", "expiration_month", "expiration_year"]].head(7)
+```
+
 # Actividad 5
 
 Crear dos columnas llamadas `harvest_mes` y `harvest_anio` que se basen en los valores de la columna `harvest_year`, dividiendo en dos partes los valores dicha columna. ¿Cuántas observaciones llevaron a ambigüedad para crear esta nueva columna?
@@ -372,7 +551,7 @@ Visualización de las nuevas columnas:
 datos %>% distinct(harvest_year, harvest_anio, harvest_mes) %>% head()
 ```
 
-**¿Cuántas observaciones llevaron a ambigüedad para crear estas nuevas columnas?**
+¿Cuántas observaciones llevaron a ambigüedad para crear estas nuevas columnas?
 
 Para la columna `harvest_year` consideramos que las observaciones que llevaron a ambigüedad en las columnas `harvest_anio` y `harvest_mes` son:
 
@@ -402,6 +581,116 @@ print(paste(
   "Número de observaciones que generan ambigüedad:",
   total_ambiguos_act5_R
 ))
+```
+
+En conclusión, hay 1,333 observaciones en la columna `harvest_year` que generan ambigüedad en la columnas `harvest_anio` y `harvest_mes`. Prácticamente todas.
+
+**Python**
+
+Primero revisemos si hay valores faltantes en la columna `harvest_year` y cuántos:
+
+```{python}
+print(datos["harvest_year"].isna().sum())
+```
+
+Vemos que tiene 47 valores faltantes.
+
+Ahora, ¿qué tipo de valores contiene la columna `harvest_year`?
+
+```{python}
+#| results: hold
+print(datos["harvest_year"].unique())
+print("tipos:", len(datos["harvest_year"].unique()))
+```
+
+Notamos que es una columna que registra fechas pero tiene serios problemas de calidad de datos. Es inconsistente en el formato de las fechas; mezcla texto en español e inglés; contiene datos de prueba como "mmm" y "TEST"; tiene errores tipográficos evidentes; contiene rangos de fechas; mezcla fechas en años, meses, estaciones del año, trimestres, etc.
+
+A continuación, vamos extraer, cuando sea posible, el año y el mes de la columna `harvest_year` mediante expresiones regulares.
+
+La nueva columna `harvest_anio` captura el primer año que aparece en la observación, mientras que `harvest_mes` captura el primer mes que aparece en la observación.
+
+```{python}
+# Definir el patrón de meses en inglés y español
+patron_meses = r"(Jan|Ene|Feb|Mar|Apr|Abr|May|Jun|Jul|Aug|Ago|Sep|Oct|Nov|Dec|Dic)"
+
+# Diccionario para mapear el mes corto extraído al mes completo en inglés
+mapa_meses = {
+    "Jan": "January",
+    "Ene": "January",
+    "Feb": "February",
+    "Mar": "March",
+    "Apr": "April",
+    "Abr": "April",
+    "May": "May",
+    "Jun": "June",
+    "Jul": "July",
+    "Aug": "August",
+    "Ago": "August",
+    "Sep": "September",
+    "Oct": "October",
+    "Nov": "November",
+    "Dec": "December",
+    "Dic": "December",
+}
+
+# Crear nuevas columnas harvest_mes y harvest_anio apartir de harvest_year
+
+# Extraer el año (primer grupo de 4 dígitos que detecte)
+datos["harvest_anio"] = datos["harvest_year"].str.extract(r"\b(\d{4})\b")[0]
+
+# Determinar condiciones para casos específicos del año
+condiciones_anio = [
+    datos["harvest_year"].str.contains("4T/10|72010", na=False),
+    datos["harvest_year"].str.contains("08/09", na=False),
+]
+# Determinar valores para casos específicos del año
+valores_anio = ["2010", "2008"]
+
+# Asigna valores a casos específicos del año
+datos["harvest_anio"] = np.select(condiciones_anio, valores_anio, default=datos["harvest_anio"])
+
+# Extraer el mes corto (ignorando mayúsculas/minúsculas)
+mes_corto = datos["harvest_year"].str.extract(f"(?i){patron_meses}", expand=False)
+
+# Capitalizar la primera letra para que coincida exactamente con las llaves del diccionario mapa_meses
+mes_corto_cap = mes_corto.str.capitalize()
+
+# Convertir el mes corto a mes completo usando el diccionario (los no encontrados quedan como NaN)
+datos["harvest_mes"] = mes_corto_cap.map(mapa_meses).astype("object")
+```
+
+Vistazo a las nuevas columnas
+
+```{python}
+datos[["harvest_year", "harvest_anio", "harvest_mes"]].drop_duplicates().head(10)
+```
+
+**¿Cuántas observaciones llevaron a ambigüedad para crear estas nuevas columnas?**
+
+Para la columna `harvest_year` consideramos que las observaciones que llevaron a ambigüedad en las columnas `harvest_anio` y `harvest_mes` son:
++ valores faltantes
++ observaciones que no contienen año
++ observaciones que no contienen mes
++ observaciones que contienen estaciones y trimestres
++ observaciones que no son fechas
++ observaciones que provienen de rangos de fechas
+
+```{python}
+#| results: hold
+# Identificar ambigüedades
+ambiguos_act5_Py = datos[
+    datos["harvest_year"].isna()
+    | datos["harvest_anio"].isna()
+    | datos["harvest_mes"].isna()
+    | datos["harvest_year"].str.contains(r"\d[Tt]", na=False)
+    | datos["harvest_year"].str.contains(r"spring|fall|winter|summer", case=False, na=False)
+    | datos["harvest_year"].str.contains(r"mmm|TEST", case=False, na=False)
+    | datos["harvest_year"].str.contains(r"-|/| to | a |Through", na=False)
+]
+
+# Contar ambiguedades
+total_ambiguos_act5_Py = len(ambiguos_act5_Py)
+print(f"Número de observaciones que generan ambigüedad: {total_ambiguos_act5_Py}")
 ```
 
 En conclusión, hay 1,333 observaciones en la columna `harvest_year` que generan ambigüedad en la columnas `harvest_anio` y `harvest_mes`. Prácticamente todas.
@@ -436,6 +725,44 @@ cor(datos$total_cup_points, datos$acidity)
 Con la correlación de Pearson de $r=0.797$ que confirmamos la relación es relativamente fuerte y positiva entre `acidity` y `total_cup_points`, de modo que, en general, los cafés con mayores calificaciones de acidez, tienden también a obtener puntajes totales más altos.
 
 No obstante, respecto a la variable `color2`, se observa un claro predominio de la categoría Green, mientras que Bluish-green y Blue-green aparecen con mucha menor frecuencia, por lo que no se aprecia una diferenciación visual fuerte entre colores en la relación analizada.
+
+**Python**
+
+```{python}
+import matplotlib.patches as mpatches
+
+datos2 = datos.dropna(subset=['color2'])
+
+plt.figure(figsize=(8,6))
+plt.scatter(
+    datos2['acidity'],
+    datos2['total_cup_points'],
+    c=datos2['color2'],
+    s=20,
+    alpha=0.7
+)
+plt.title("Relación entre Acidity y Total Cup Points")
+plt.xlabel("Acidity")
+plt.ylabel("Total Cup Points")
+
+legend_elements = [
+    mpatches.Patch(color="#00FF66", label="Green"),
+    mpatches.Patch(color="#CCEBC5", label="Bluish-green"),
+    mpatches.Patch(color="#BFFFFF", label="Blue-green")
+]
+
+plt.legend(handles=legend_elements, title="Color")
+
+plt.grid(False)
+plt.tight_layout()
+
+plt.show()
+plt.close()
+```
+
+```{python}
+datos[['total_cup_points', 'acidity']].corr()
+```
 
 # Actividad 7
 
@@ -472,6 +799,25 @@ datos |>
     face = "bold",
     size = 16
   ))
+```
+
+**Python**
+
+```{python}
+datos_plot = datos[datos["bag_weight2"] > 0] # Indefinido log(0)
+sns.kdeplot(
+    data=datos_plot,
+    x=np.log10(datos_plot["bag_weight2"]),  # Escala log
+    hue="species",
+    fill=True,
+    alpha=0.5,
+    common_norm=False
+)
+plt.xlabel("bag_weight2 (log10)")
+plt.ylabel("Densidad")
+plt.title("Distribución de bag_weight2 por especie de café")
+plt.show()
+plt.close()
 ```
 
 # Actividad 8
@@ -586,11 +932,123 @@ cat("\nConteo por país:\n")
 print(table(datos_act8$country_of_origin))
 ```
 
+```{python}
+datos["expiration_parsed"] = pd.to_datetime(
+    datos["expiration"].str.replace(r"(\d+)(st|nd|rd|th)", r"\1", regex=True),
+    errors="coerce",
+)
+
+datos["exp_ym"] = datos["expiration_parsed"].dt.to_period("M").dt.to_timestamp()
+
+paises = ["Mexico", "Brazil", "Colombia", "Guatemala"]
+colores = {
+    "Mexico": "#FF6B35",
+    "Brazil": "#06D6A0",
+    "Colombia": "#118AB2",
+    "Guatemala": "#FFD166",
+}
+
+d = (
+    datos[datos["country_of_origin"].isin(paises)]
+    .dropna(subset=["exp_ym", "total_cup_points"])
+    .copy()
+)
+
+fig = plt.figure(figsize=(16, 9), facecolor="white")
+fig.suptitle(
+    "Puntaje Total de Taza según Fecha de Expiración",
+    fontsize=17,
+    fontweight="bold",
+    color="#111111",
+    y=0.98,
+)
+
+
+gs = GridSpec(
+    2,
+    2,
+    figure=fig,
+    hspace=0.50,
+    wspace=0.28,
+    left=0.07,
+    right=0.97,
+    top=0.92,
+    bottom=0.10,
+)
+
+for idx, pais in enumerate(paises):
+    ax = fig.add_subplot(gs[idx // 2, idx % 2])
+    sub = d[d["country_of_origin"] == pais].sort_values("exp_ym")
+    color = colores[pais]
+
+    ax.scatter(
+        sub["exp_ym"],
+        sub["total_cup_points"],
+        color=color,
+        alpha=0.30,
+        s=20,
+        zorder=3,
+        linewidths=0,
+    )
+
+    monthly = sub.groupby("exp_ym")["total_cup_points"].median().reset_index()
+    if len(monthly) > 3:
+        x_num = mdates.date2num(monthly["exp_ym"])
+        k = min(3, len(monthly) - 1)
+        spl = make_interp_spline(x_num, monthly["total_cup_points"], k=k)
+        x_new = np.linspace(x_num.min(), x_num.max(), 300)
+        ax.plot(
+            mdates.num2date(x_new), spl(x_new), color=color, linewidth=2.2, zorder=4
+        )
+
+    ax.fill_between(mdates.num2date(x_new), spl(x_new), alpha=0.08, color=color)
+
+    ax.set_facecolor("white")
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.spines["left"].set_color("#DDDDDD")
+    ax.spines["bottom"].set_color("#DDDDDD")
+    ax.grid(axis="y", color="#F0F0F0", linewidth=0.7)
+    ax.grid(axis="x", visible=False)
+    ax.tick_params(colors="#555555", labelsize=8.5)
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+    ax.xaxis.set_major_locator(mdates.YearLocator(2))
+    plt.setp(ax.xaxis.get_majorticklabels(), rotation=45, ha="right")
+    ax.set_ylim(62, 95)
+    ax.set_yticks(range(65, 96, 5))
+
+    ax.set_title(
+        f"  {pais}",
+        fontsize=12,
+        fontweight="bold",
+        color="white",
+        pad=0,
+        loc="left",
+        bbox=dict(boxstyle="square,pad=0.4", facecolor=color, edgecolor="none"),
+    )
+    ax.set_ylabel("Total Cup Points", fontsize=9, color="#555555")
+    ax.set_xlabel("Año de expiración", fontsize=9, color="#555555")
+
+    ax.text(
+        0.98,
+        0.05,
+        f"n = {len(sub)}",
+        transform=ax.transAxes,
+        ha="right",
+        va="bottom",
+        fontsize=8,
+        color="#AAAAAA",
+    )
+
+plt.show()
+plt.close()
+```
+
+
 # Actividad 9
 
 Elabore una visualización con `ggplot2` que relacione el mes de expiración con el `altitude_mean_meters`, `altitude_low_meters` y `altitude_high_meters` sólo de los granos mexicanos, brasileños, colombianos y guatemaltecos de los años de expiración 2016 y 2017.
 
-Vamos a crer un dataframe que utilizaremos para crear la gráfica llamado `datos_altitud`.
+Vamos a crear un dataframe que utilizaremos para crear la gráfica llamado `datos_altitud`.
 
 ```{r}
 datos_altitud <- datos |>
@@ -631,7 +1089,7 @@ head(datos_altitud)
 
 ```{r}
 #| fig-width: 10
-#| fig-height: 15
+#| fig-height: 12
 datos_altitud |>
   ggplot(aes(x = month, y = meters)) +
   # Primero graficamos los boxplots
@@ -664,6 +1122,140 @@ datos_altitud |>
     panel.spacing = unit(0.2, units = "lines"),
     axis.text.x = element_text(angle = 90, vjust = 0.3, hjust = 1)
   )
+```
+
+Copiamos el dataframe `datos_altitud` de R a un dataframe de pandas.
+
+```{python}
+datos_altitud = r.datos_altitud
+```
+
+Preprocesamiento para realizar la gráfica:
+
+```{python}
+# Definimos un orden para la columna month
+month_order = [
+    "Enero", "Febrero", "Marzo", "Abril",
+    "Mayo", "Junio", "Julio", "Agosto",
+    "Septiembre", "Octubre", "Noviembre", "Diciembre"
+]
+
+datos_altitud["month"] = pd.Categorical(
+    datos_altitud["month"],
+    categories=month_order,
+    ordered=True
+)
+
+# También para los niveles de altura
+orden_nivel_altitud = ["Alto", "Promedio", "Bajo"]
+
+datos_altitud["altitude"] = pd.Categorical(
+    datos_altitud["altitude"],
+    categories=orden_nivel_altitud,
+    ordered=True
+)
+
+datos_altitud = datos_altitud.rename(columns={"altitude": "Nivel de altitud"})
+```
+
+Gráfica:
+
+```{python}
+#| fig-width: 10
+#| fig-height: 13
+plt.style.use('ggplot') # Para que la gráfica se vea como las de ggplot
+
+palette = {
+    "México": "#ee1289",
+    "Brasil": "#009739",
+    "Colombia": "#003087",
+    "Guatemala": "#70b4e6"
+}
+
+# Boxplots
+g = sns.catplot(
+    data=datos_altitud,
+    x="month",
+    y="meters",
+    row="Nivel de altitud", # Una gráfica por cada nivel de altitud
+    kind="box",
+    order=month_order, # Tuvimos que definir un orden
+    height=3,
+    aspect=2,
+    sharey=False,
+    color="white"
+)
+
+# Para graficar los puntos. Se hace para cada nivel de altura
+for altitude_value, ax in g.axes_dict.items():
+
+    subset = datos_altitud[
+        datos_altitud["Nivel de altitud"] == altitude_value
+    ]
+
+    # Gráfica de puntos
+    sns.stripplot(
+        data=subset,
+        x="month",
+        y="meters",
+        hue="country_of_origin",
+        jitter=0.1,
+        order=month_order,
+        palette=palette,
+        ax=ax
+    )
+
+    # Quitamos leyendas duplicadas
+    if ax.get_legend() is not None:
+        ax.get_legend().remove()
+
+# Creamos una misma leyenda para todas las subgráficas
+handles, labels = ax.get_legend_handles_labels()
+
+g.figure.legend(
+    handles,
+    labels,
+    title="País de origen",
+    loc="center left",
+    bbox_to_anchor=(0.85, 0.5) # Cambiar posición de la leyenda
+)
+
+# Etiquetas y títulos
+g.set_ylabels("")
+g.set_xlabels("Mes de expiración")
+
+g.figure.supylabel(
+    "Altitud en metros",
+    x=0.02
+)
+
+g.figure.subplots_adjust(
+    top=0.88,
+    right=0.82,
+    hspace=0.15
+)
+
+g.figure.suptitle(
+    "Relación de Altitudes por Mes de Expiración",
+    x=0.08,
+    ha="left",
+    fontsize=16
+)
+
+g.figure.text(
+    0.08,
+    0.92,
+    "Granos de México, Brasil, Colombia y Guatemala \nen los años de expiración 2016 y 2017",
+    ha="left",
+    fontsize=11
+)
+
+# Rotamos etiquetas del eje x
+for ax in g.axes.flat:
+    ax.tick_params(axis="x", rotation=90)
+    
+plt.show()
+plt.close();
 ```
 
 # Actividad 10
@@ -732,5 +1324,86 @@ graf_act10 <- ggplot(datos_act10, aes(x = acidity, y = aftertaste)) +
   )
 
 graf_act10
+```
+
+```{python}
+# Preparación de datos
+datos_act10_Py = datos[
+    (datos["aftertaste"] > 0) & (datos["acidity"] > 0) & (datos["body"] > 0)
+][["aftertaste", "acidity", "body", "species"]]
+
+# Construcción del gráfico
+
+# Configurar el estilo del lienzo
+sns.set_theme(style="whitegrid", font_scale=1.0, font="sans-serif")
+
+# Crear facetas por 'species'
+g = sns.FacetGrid(
+    data=datos_act10_Py,
+    col="species",
+    height=5,
+    aspect=1.1,
+    margin_titles=True
+)
+
+# Gráfico de dispersión entre 'acidity' y 'aftertaste'
+g.map_dataframe(
+    sns.scatterplot,
+    x="acidity",
+    y="aftertaste",
+    hue="body",
+    palette="viridis", # Paleta de color continuo para representar 'body'
+    alpha=0.5,
+    s=50,
+    edgecolor="w",
+    linewidth=0.5
+)
+
+# Título principal del Canvas
+g.fig.suptitle(
+    "Relación entre Acidez, Sabor Residual y Cuerpo por Especie de Café",
+    fontsize=13,
+    y=1.05
+)
+
+# Titulos de los ejes
+g.set_axis_labels("Puntaje de Acidez (Acidity)","Puntaje de Sabor Residual (Aftertaste)",fontsize=10)
+
+# Personalizar cada faceta
+for ax in g.axes.flat:
+    # Obtener el nombre de la especie del formato automático de Seaborn
+    especie_nombre = ax.get_title().split("=")[-1].strip()
+    # Ajustar títulos de cada faceta
+    ax.set_title(especie_nombre, fontsize=11, pad=10)
+
+    # Malla
+    ax.grid(True, alpha=0.1, color='gray')
+
+    # Etiquetas de los ejes
+    ax.tick_params(axis='both', labelsize=9)
+
+    # Dibujar un borde sutil para definir el recuadro de cada gráfica
+    ax.spines['left'].set_visible(True)
+    ax.spines['bottom'].set_visible(True)
+    ax.spines['left'].set_color('gray')
+    ax.spines['bottom'].set_color('gray')
+
+# Extraemos los límites mínimos y máximos para la escala de 'body'
+vmin = datos["body"].min()
+vmax = datos["body"].max()
+
+# Agregar una barra de color para la leyenda de 'body'
+sm = plt.cm.ScalarMappable(cmap="viridis", norm=plt.Normalize(vmin=vmin, vmax=vmax))
+sm.set_array([])
+
+# Posicionar la barra de color
+cbar = g.fig.colorbar(sm, ax=g.fig.axes, orientation="vertical", shrink=0.3, pad=0.05)
+cbar.set_label("Puntaje del Cuerpo (Body)", fontsize=10, labelpad=10)
+cbar.ax.tick_params(labelsize=8)
+cbar.outline.set_visible(False)
+
+# Mostrar el lienzo
+plt.show()
+plt.close()
 ```
 
