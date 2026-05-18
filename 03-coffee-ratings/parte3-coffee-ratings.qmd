@@ -1099,7 +1099,7 @@ head(datos_altitud)
 
 ```{r}
 #| fig-width: 10
-#| fig-height: 12
+#| fig-height: 13
 datos_altitud |>
   ggplot(aes(x = month, y = meters)) +
   # Primero graficamos los boxplots
@@ -1168,11 +1168,12 @@ datos_altitud["altitude"] = pd.Categorical(
 datos_altitud = datos_altitud.rename(columns={"altitude": "Nivel de altitud"})
 ```
 
-Gráfica:
+Se optó por guardar la siguiente gráfica en un archivo png y referenciarla desde markdown, debido a que quarto la renderiza e imprime tres veces en el html.
 
 ```{python}
 #| fig-width: 10
 #| fig-height: 13
+#| output: false
 plt.style.use('ggplot') # Para que la gráfica se vea como las de ggplot
 
 palette = {
@@ -1264,9 +1265,11 @@ g.figure.text(
 for ax in g.axes.flat:
     ax.tick_params(axis="x", rotation=90)
     
+plt.savefig("actividad09_python.png", bbox_inches='tight')
 plt.show()
 ```
 
+![](actividad09_python.png)
 
 # Actividad 10
 
@@ -1336,7 +1339,10 @@ graf_act10 <- ggplot(datos_act10, aes(x = acidity, y = aftertaste)) +
 graf_act10
 ```
 
+Se optó por guardar la siguiente gráfica en un archivo png y referenciarla desde markdown, debido a que quarto la renderiza e imprime tres veces en el html.
+
 ```{python}
+#| output: false
 # Preparación de datos
 datos_act10_Py = datos[
     (datos["aftertaste"] > 0) & (datos["acidity"] > 0) & (datos["body"] > 0)
@@ -1412,7 +1418,9 @@ cbar.set_label("Puntaje del Cuerpo (Body)", fontsize=10, labelpad=10)
 cbar.ax.tick_params(labelsize=8)
 cbar.outline.set_visible(False)
 
-# Mostrar el lienzo
+# Guardar gráfica en un archivo png
+plt.savefig("actividad10_python.png", bbox_inches='tight')
 plt.show()
 ```
 
+![](actividad10_python.png)

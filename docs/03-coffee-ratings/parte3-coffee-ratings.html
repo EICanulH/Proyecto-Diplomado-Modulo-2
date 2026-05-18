@@ -479,8 +479,8 @@ code.sourceCode.python::before{content:'Python'; float:right}
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> make_interp_spline</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>plt.ioff()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;contextlib.ExitStack object at 0x000001933B1D0050&gt;
-&lt;contextlib.ExitStack object at 0x000001933E034B90&gt;</code></pre>
+<pre><code>&lt;contextlib.ExitStack object at 0x0000024168C80050&gt;
+&lt;contextlib.ExitStack object at 0x000002416B934B90&gt;</code></pre>
 </div>
 </div>
 <p>Se usará el conjunto de datos de encuesta de café <code>coffee_ratings.csv</code></p>
@@ -1742,7 +1742,7 @@ Conteo por país:
 <span id="cb84-22"><a href="#cb84-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb84-23"><a href="#cb84-23" aria-hidden="true" tabindex="-1"></a>datos_altitud <span class="op">=</span> datos_altitud.rename(columns<span class="op">=</span>{<span class="st">"altitude"</span>: <span class="st">"Nivel de altitud"</span>})</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Gráfica:</p>
+<p>Se optó por guardar la siguiente gráfica en un archivo png y referenciarla desde markdown, debido a que quarto la renderiza e imprime tres veces en el html.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb85"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>plt.style.use(<span class="st">'ggplot'</span>) <span class="co"># Para que la gráfica se vea como las de ggplot</span></span>
 <span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -1802,236 +1802,196 @@ Conteo por país:
 <span id="cb85-56"><a href="#cb85-56" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb85-57"><a href="#cb85-57" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb85-58"><a href="#cb85-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Etiquetas y títulos</span></span>
-<span id="cb85-59"><a href="#cb85-59" aria-hidden="true" tabindex="-1"></a>g.set_ylabels(<span class="st">""</span>)</span>
-<span id="cb85-60"><a href="#cb85-60" aria-hidden="true" tabindex="-1"></a>g.set_xlabels(<span class="st">"Mes de expiración"</span>)</span>
-<span id="cb85-61"><a href="#cb85-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-62"><a href="#cb85-62" aria-hidden="true" tabindex="-1"></a>g.figure.supylabel(</span>
-<span id="cb85-63"><a href="#cb85-63" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Altitud en metros"</span>,</span>
-<span id="cb85-64"><a href="#cb85-64" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="fl">0.02</span></span>
-<span id="cb85-65"><a href="#cb85-65" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb85-66"><a href="#cb85-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-67"><a href="#cb85-67" aria-hidden="true" tabindex="-1"></a>g.figure.subplots_adjust(</span>
-<span id="cb85-68"><a href="#cb85-68" aria-hidden="true" tabindex="-1"></a>    top<span class="op">=</span><span class="fl">0.88</span>,</span>
-<span id="cb85-69"><a href="#cb85-69" aria-hidden="true" tabindex="-1"></a>    right<span class="op">=</span><span class="fl">0.82</span>,</span>
-<span id="cb85-70"><a href="#cb85-70" aria-hidden="true" tabindex="-1"></a>    hspace<span class="op">=</span><span class="fl">0.15</span></span>
-<span id="cb85-71"><a href="#cb85-71" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb85-72"><a href="#cb85-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-73"><a href="#cb85-73" aria-hidden="true" tabindex="-1"></a>g.figure.suptitle(</span>
-<span id="cb85-74"><a href="#cb85-74" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Relación de Altitudes por Mes de Expiración"</span>,</span>
-<span id="cb85-75"><a href="#cb85-75" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="fl">0.08</span>,</span>
-<span id="cb85-76"><a href="#cb85-76" aria-hidden="true" tabindex="-1"></a>    ha<span class="op">=</span><span class="st">"left"</span>,</span>
-<span id="cb85-77"><a href="#cb85-77" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">16</span></span>
-<span id="cb85-78"><a href="#cb85-78" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb85-79"><a href="#cb85-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-80"><a href="#cb85-80" aria-hidden="true" tabindex="-1"></a>g.figure.text(</span>
-<span id="cb85-81"><a href="#cb85-81" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.08</span>,</span>
-<span id="cb85-82"><a href="#cb85-82" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.92</span>,</span>
-<span id="cb85-83"><a href="#cb85-83" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Granos de México, Brasil, Colombia y Guatemala </span><span class="ch">\n</span><span class="st">en los años de expiración 2016 y 2017"</span>,</span>
-<span id="cb85-84"><a href="#cb85-84" aria-hidden="true" tabindex="-1"></a>    ha<span class="op">=</span><span class="st">"left"</span>,</span>
-<span id="cb85-85"><a href="#cb85-85" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">11</span></span>
-<span id="cb85-86"><a href="#cb85-86" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb85-87"><a href="#cb85-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb85-88"><a href="#cb85-88" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotamos etiquetas del eje x</span></span>
-<span id="cb85-89"><a href="#cb85-89" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> g.axes.flat:</span>
-<span id="cb85-90"><a href="#cb85-90" aria-hidden="true" tabindex="-1"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">"x"</span>, rotation<span class="op">=</span><span class="dv">90</span>)</span>
-<span id="cb85-91"><a href="#cb85-91" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb85-92"><a href="#cb85-92" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid figure-img" width="318"></p>
-</figure>
+<span id="cb85-59"><a href="#cb85-59" aria-hidden="true" tabindex="-1"></a>g.set_ylabels(<span class="st">""</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>g.set_xlabels(<span class="st">"Mes de expiración"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>g.figure.supylabel(</span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Altitud en metros"</span>,</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="fl">0.02</span></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a>g.figure.subplots_adjust(</span>
+<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a>    top<span class="op">=</span><span class="fl">0.88</span>,</span>
+<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a>    right<span class="op">=</span><span class="fl">0.82</span>,</span>
+<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>    hspace<span class="op">=</span><span class="fl">0.15</span></span>
+<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb87-11"><a href="#cb87-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-12"><a href="#cb87-12" aria-hidden="true" tabindex="-1"></a>g.figure.suptitle(</span>
+<span id="cb87-13"><a href="#cb87-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Relación de Altitudes por Mes de Expiración"</span>,</span>
+<span id="cb87-14"><a href="#cb87-14" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="fl">0.08</span>,</span>
+<span id="cb87-15"><a href="#cb87-15" aria-hidden="true" tabindex="-1"></a>    ha<span class="op">=</span><span class="st">"left"</span>,</span>
+<span id="cb87-16"><a href="#cb87-16" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">16</span></span>
+<span id="cb87-17"><a href="#cb87-17" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb87-18"><a href="#cb87-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-19"><a href="#cb87-19" aria-hidden="true" tabindex="-1"></a>g.figure.text(</span>
+<span id="cb87-20"><a href="#cb87-20" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.08</span>,</span>
+<span id="cb87-21"><a href="#cb87-21" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.92</span>,</span>
+<span id="cb87-22"><a href="#cb87-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Granos de México, Brasil, Colombia y Guatemala </span><span class="ch">\n</span><span class="st">en los años de expiración 2016 y 2017"</span>,</span>
+<span id="cb87-23"><a href="#cb87-23" aria-hidden="true" tabindex="-1"></a>    ha<span class="op">=</span><span class="st">"left"</span>,</span>
+<span id="cb87-24"><a href="#cb87-24" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">11</span></span>
+<span id="cb87-25"><a href="#cb87-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb87-26"><a href="#cb87-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-27"><a href="#cb87-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotamos etiquetas del eje x</span></span>
+<span id="cb87-28"><a href="#cb87-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> g.axes.flat:</span>
+<span id="cb87-29"><a href="#cb87-29" aria-hidden="true" tabindex="-1"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">"x"</span>, rotation<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb87-30"><a href="#cb87-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb87-31"><a href="#cb87-31" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"actividad09_python.png"</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb87-32"><a href="#cb87-32" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-61-2.png" class="img-fluid figure-img" width="318"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-61-3.png" class="img-fluid figure-img" width="586"></p>
-</figure>
-</div>
-</div>
-</div>
+<p><img src="actividad09_python.png" class="img-fluid"></p>
 </section>
 <section id="actividad-10" class="level1">
 <h1>Actividad 10</h1>
 <p>Elabore una visualización con <code>ggplot2</code> que relacione el <code>aftertaste</code>, <code>acidity</code>, <code>body</code> y <code>species</code> en un mismo canvas.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparación de datos</span></span>
-<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>datos_act10 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
-<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(aftertaste, acidity, body, species) <span class="sc">%&gt;%</span></span>
-<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(species)) <span class="sc">%&gt;%</span></span>
-<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(aftertaste <span class="sc">&gt;</span> <span class="dv">0</span>, acidity <span class="sc">&gt;</span> <span class="dv">0</span>, body <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Construcción del gráfico</span></span>
-<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>graf_act10 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(datos_act10, <span class="fu">aes</span>(<span class="at">x =</span> acidity, <span class="at">y =</span> aftertaste)) <span class="sc">+</span></span>
-<span id="cb86-9"><a href="#cb86-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Puntos con transparencia para manejar el solapamiento (overplotting)</span></span>
-<span id="cb86-10"><a href="#cb86-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> body),</span>
-<span id="cb86-11"><a href="#cb86-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">stroke =</span> <span class="fl">0.2</span>,</span>
-<span id="cb86-12"><a href="#cb86-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="fl">0.4</span>,</span>
-<span id="cb86-13"><a href="#cb86-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb86-14"><a href="#cb86-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Tendencia estadística</span></span>
-<span id="cb86-15"><a href="#cb86-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(</span>
-<span id="cb86-16"><a href="#cb86-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"lm"</span>,</span>
-<span id="cb86-17"><a href="#cb86-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> y <span class="sc">~</span> x,</span>
-<span id="cb86-18"><a href="#cb86-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"black"</span>,</span>
-<span id="cb86-19"><a href="#cb86-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.5</span>,</span>
-<span id="cb86-20"><a href="#cb86-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">se =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb86-21"><a href="#cb86-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"gray80"</span>,</span>
-<span id="cb86-22"><a href="#cb86-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">"dashed"</span></span>
-<span id="cb86-23"><a href="#cb86-23" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
-<span id="cb86-24"><a href="#cb86-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> species, <span class="at">nrow =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
-<span id="cb86-25"><a href="#cb86-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Escala de color continua</span></span>
-<span id="cb86-26"><a href="#cb86-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">"plasma"</span>) <span class="sc">+</span></span>
-<span id="cb86-27"><a href="#cb86-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Etiquetas</span></span>
-<span id="cb86-28"><a href="#cb86-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb86-29"><a href="#cb86-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Relación entre Acidez, Sabor Residual y Cuerpo por Especie de Café"</span>,</span>
-<span id="cb86-30"><a href="#cb86-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Análisis de dispersión con ajuste lineal por mínimos cuadrados"</span>,</span>
-<span id="cb86-31"><a href="#cb86-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Puntaje de Acidez (Acidity)"</span>,</span>
-<span id="cb86-32"><a href="#cb86-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Puntaje de Sabor Residual (Aftertaste)"</span>,</span>
-<span id="cb86-33"><a href="#cb86-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Puntaje del Cuerpo (Body)"</span></span>
-<span id="cb86-34"><a href="#cb86-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb86-35"><a href="#cb86-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Tema</span></span>
-<span id="cb86-36"><a href="#cb86-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>, <span class="at">base_family =</span> <span class="st">"sans"</span>)<span class="sc">+</span></span>
-<span id="cb86-37"><a href="#cb86-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb86-38"><a href="#cb86-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Títulos y subtítulos</span></span>
-<span id="cb86-39"><a href="#cb86-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">13</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">5</span>)),</span>
-<span id="cb86-40"><a href="#cb86-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"gray30"</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">15</span>)),</span>
-<span id="cb86-41"><a href="#cb86-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-42"><a href="#cb86-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ejes</span></span>
-<span id="cb86-43"><a href="#cb86-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="fl">0.4</span>),</span>
-<span id="cb86-44"><a href="#cb86-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"gray20"</span>, <span class="at">face =</span> <span class="st">"plain"</span>, <span class="at">size =</span> <span class="dv">10</span>),</span>
-<span id="cb86-45"><a href="#cb86-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"gray20"</span>, <span class="at">size =</span> <span class="dv">9</span>),</span>
-<span id="cb86-46"><a href="#cb86-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-47"><a href="#cb86-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Elimina líneas secundarias</span></span>
-<span id="cb86-48"><a href="#cb86-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb86-49"><a href="#cb86-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-50"><a href="#cb86-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Facetas</span></span>
-<span id="cb86-51"><a href="#cb86-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold.italic"</span>, <span class="at">size =</span> <span class="dv">11</span>, <span class="at">color =</span> <span class="st">"white"</span>),</span>
-<span id="cb86-52"><a href="#cb86-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"gray20"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
-<span id="cb86-53"><a href="#cb86-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-54"><a href="#cb86-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Leyendas</span></span>
-<span id="cb86-55"><a href="#cb86-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
-<span id="cb86-56"><a href="#cb86-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.box =</span> <span class="st">"horizontal"</span>,</span>
-<span id="cb86-57"><a href="#cb86-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>, <span class="at">color =</span> <span class="st">"gray20"</span>),</span>
-<span id="cb86-58"><a href="#cb86-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>, <span class="at">color =</span> <span class="st">"gray20"</span>)</span>
-<span id="cb86-59"><a href="#cb86-59" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb86-60"><a href="#cb86-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-61"><a href="#cb86-61" aria-hidden="true" tabindex="-1"></a>graf_act10</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparación de datos</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>datos_act10 <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(aftertaste, acidity, body, species) <span class="sc">%&gt;%</span></span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(species)) <span class="sc">%&gt;%</span></span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(aftertaste <span class="sc">&gt;</span> <span class="dv">0</span>, acidity <span class="sc">&gt;</span> <span class="dv">0</span>, body <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb88-6"><a href="#cb88-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-7"><a href="#cb88-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Construcción del gráfico</span></span>
+<span id="cb88-8"><a href="#cb88-8" aria-hidden="true" tabindex="-1"></a>graf_act10 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(datos_act10, <span class="fu">aes</span>(<span class="at">x =</span> acidity, <span class="at">y =</span> aftertaste)) <span class="sc">+</span></span>
+<span id="cb88-9"><a href="#cb88-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Puntos con transparencia para manejar el solapamiento (overplotting)</span></span>
+<span id="cb88-10"><a href="#cb88-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> body),</span>
+<span id="cb88-11"><a href="#cb88-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">stroke =</span> <span class="fl">0.2</span>,</span>
+<span id="cb88-12"><a href="#cb88-12" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha =</span> <span class="fl">0.4</span>,</span>
+<span id="cb88-13"><a href="#cb88-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb88-14"><a href="#cb88-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Tendencia estadística</span></span>
+<span id="cb88-15"><a href="#cb88-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(</span>
+<span id="cb88-16"><a href="#cb88-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"lm"</span>,</span>
+<span id="cb88-17"><a href="#cb88-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">formula =</span> y <span class="sc">~</span> x,</span>
+<span id="cb88-18"><a href="#cb88-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"black"</span>,</span>
+<span id="cb88-19"><a href="#cb88-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="fl">0.5</span>,</span>
+<span id="cb88-20"><a href="#cb88-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">se =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb88-21"><a href="#cb88-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"gray80"</span>,</span>
+<span id="cb88-22"><a href="#cb88-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">"dashed"</span></span>
+<span id="cb88-23"><a href="#cb88-23" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span></span>
+<span id="cb88-24"><a href="#cb88-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> species, <span class="at">nrow =</span> <span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb88-25"><a href="#cb88-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Escala de color continua</span></span>
+<span id="cb88-26"><a href="#cb88-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_c</span>(<span class="at">option =</span> <span class="st">"plasma"</span>) <span class="sc">+</span></span>
+<span id="cb88-27"><a href="#cb88-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Etiquetas</span></span>
+<span id="cb88-28"><a href="#cb88-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb88-29"><a href="#cb88-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Relación entre Acidez, Sabor Residual y Cuerpo por Especie de Café"</span>,</span>
+<span id="cb88-30"><a href="#cb88-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Análisis de dispersión con ajuste lineal por mínimos cuadrados"</span>,</span>
+<span id="cb88-31"><a href="#cb88-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Puntaje de Acidez (Acidity)"</span>,</span>
+<span id="cb88-32"><a href="#cb88-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Puntaje de Sabor Residual (Aftertaste)"</span>,</span>
+<span id="cb88-33"><a href="#cb88-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Puntaje del Cuerpo (Body)"</span></span>
+<span id="cb88-34"><a href="#cb88-34" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb88-35"><a href="#cb88-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Tema</span></span>
+<span id="cb88-36"><a href="#cb88-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">11</span>, <span class="at">base_family =</span> <span class="st">"sans"</span>)<span class="sc">+</span></span>
+<span id="cb88-37"><a href="#cb88-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb88-38"><a href="#cb88-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Títulos y subtítulos</span></span>
+<span id="cb88-39"><a href="#cb88-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">13</span>, <span class="at">hjust =</span> <span class="dv">0</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">5</span>)),</span>
+<span id="cb88-40"><a href="#cb88-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"gray30"</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">15</span>)),</span>
+<span id="cb88-41"><a href="#cb88-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-42"><a href="#cb88-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ejes</span></span>
+<span id="cb88-43"><a href="#cb88-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.line =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="fl">0.4</span>),</span>
+<span id="cb88-44"><a href="#cb88-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"gray20"</span>, <span class="at">face =</span> <span class="st">"plain"</span>, <span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb88-45"><a href="#cb88-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"gray20"</span>, <span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb88-46"><a href="#cb88-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-47"><a href="#cb88-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Elimina líneas secundarias</span></span>
+<span id="cb88-48"><a href="#cb88-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb88-49"><a href="#cb88-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-50"><a href="#cb88-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Facetas</span></span>
+<span id="cb88-51"><a href="#cb88-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.text =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold.italic"</span>, <span class="at">size =</span> <span class="dv">11</span>, <span class="at">color =</span> <span class="st">"white"</span>),</span>
+<span id="cb88-52"><a href="#cb88-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"gray20"</span>, <span class="at">color =</span> <span class="cn">NA</span>),</span>
+<span id="cb88-53"><a href="#cb88-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-54"><a href="#cb88-54" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Leyendas</span></span>
+<span id="cb88-55"><a href="#cb88-55" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb88-56"><a href="#cb88-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.box =</span> <span class="st">"horizontal"</span>,</span>
+<span id="cb88-57"><a href="#cb88-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>, <span class="at">color =</span> <span class="st">"gray20"</span>),</span>
+<span id="cb88-58"><a href="#cb88-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>, <span class="at">color =</span> <span class="st">"gray20"</span>)</span>
+<span id="cb88-59"><a href="#cb88-59" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb88-60"><a href="#cb88-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-61"><a href="#cb88-61" aria-hidden="true" tabindex="-1"></a>graf_act10</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-62-7.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-62-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+<p>Se optó por guardar la siguiente gráfica en un archivo png y referenciarla desde markdown, debido a que quarto la renderiza e imprime tres veces en el html.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparación de datos</span></span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>datos_act10_Py <span class="op">=</span> datos[</span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>    (datos[<span class="st">"aftertaste"</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (datos[<span class="st">"acidity"</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (datos[<span class="st">"body"</span>] <span class="op">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>][[<span class="st">"aftertaste"</span>, <span class="st">"acidity"</span>, <span class="st">"body"</span>, <span class="st">"species"</span>]]</span>
-<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Construcción del gráfico</span></span>
-<span id="cb87-7"><a href="#cb87-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-8"><a href="#cb87-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar el estilo del lienzo</span></span>
-<span id="cb87-9"><a href="#cb87-9" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>, font_scale<span class="op">=</span><span class="fl">1.0</span>, font<span class="op">=</span><span class="st">"sans-serif"</span>)</span>
-<span id="cb87-10"><a href="#cb87-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-11"><a href="#cb87-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear facetas por 'species'</span></span>
-<span id="cb87-12"><a href="#cb87-12" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.FacetGrid(</span>
-<span id="cb87-13"><a href="#cb87-13" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>datos_act10_Py,</span>
-<span id="cb87-14"><a href="#cb87-14" aria-hidden="true" tabindex="-1"></a>    col<span class="op">=</span><span class="st">"species"</span>,</span>
-<span id="cb87-15"><a href="#cb87-15" aria-hidden="true" tabindex="-1"></a>    height<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb87-16"><a href="#cb87-16" aria-hidden="true" tabindex="-1"></a>    aspect<span class="op">=</span><span class="fl">1.1</span>,</span>
-<span id="cb87-17"><a href="#cb87-17" aria-hidden="true" tabindex="-1"></a>    margin_titles<span class="op">=</span><span class="va">True</span></span>
-<span id="cb87-18"><a href="#cb87-18" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb87-19"><a href="#cb87-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-20"><a href="#cb87-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de dispersión entre 'acidity' y 'aftertaste'</span></span>
-<span id="cb87-21"><a href="#cb87-21" aria-hidden="true" tabindex="-1"></a>g.map_dataframe(</span>
-<span id="cb87-22"><a href="#cb87-22" aria-hidden="true" tabindex="-1"></a>    sns.scatterplot,</span>
-<span id="cb87-23"><a href="#cb87-23" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"acidity"</span>,</span>
-<span id="cb87-24"><a href="#cb87-24" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"aftertaste"</span>,</span>
-<span id="cb87-25"><a href="#cb87-25" aria-hidden="true" tabindex="-1"></a>    hue<span class="op">=</span><span class="st">"body"</span>,</span>
-<span id="cb87-26"><a href="#cb87-26" aria-hidden="true" tabindex="-1"></a>    palette<span class="op">=</span><span class="st">"viridis"</span>, <span class="co"># Paleta de color continuo para representar 'body'</span></span>
-<span id="cb87-27"><a href="#cb87-27" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.5</span>,</span>
-<span id="cb87-28"><a href="#cb87-28" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">50</span>,</span>
-<span id="cb87-29"><a href="#cb87-29" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">"w"</span>,</span>
-<span id="cb87-30"><a href="#cb87-30" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">0.5</span></span>
-<span id="cb87-31"><a href="#cb87-31" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb87-32"><a href="#cb87-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-33"><a href="#cb87-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Título principal del Canvas</span></span>
-<span id="cb87-34"><a href="#cb87-34" aria-hidden="true" tabindex="-1"></a>g.fig.suptitle(</span>
-<span id="cb87-35"><a href="#cb87-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Relación entre Acidez, Sabor Residual y Cuerpo por Especie de Café"</span>,</span>
-<span id="cb87-36"><a href="#cb87-36" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">13</span>,</span>
-<span id="cb87-37"><a href="#cb87-37" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="fl">1.05</span></span>
-<span id="cb87-38"><a href="#cb87-38" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb87-39"><a href="#cb87-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-40"><a href="#cb87-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Titulos de los ejes</span></span>
-<span id="cb87-41"><a href="#cb87-41" aria-hidden="true" tabindex="-1"></a>g.set_axis_labels(<span class="st">"Puntaje de Acidez (Acidity)"</span>,<span class="st">"Puntaje de Sabor Residual (Aftertaste)"</span>,fontsize<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb87-42"><a href="#cb87-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-43"><a href="#cb87-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Personalizar cada faceta</span></span>
-<span id="cb87-44"><a href="#cb87-44" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> g.axes.flat:</span>
-<span id="cb87-45"><a href="#cb87-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Obtener el nombre de la especie del formato automático de Seaborn</span></span>
-<span id="cb87-46"><a href="#cb87-46" aria-hidden="true" tabindex="-1"></a>    especie_nombre <span class="op">=</span> ax.get_title().split(<span class="st">"="</span>)[<span class="op">-</span><span class="dv">1</span>].strip()</span>
-<span id="cb87-47"><a href="#cb87-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ajustar títulos de cada faceta</span></span>
-<span id="cb87-48"><a href="#cb87-48" aria-hidden="true" tabindex="-1"></a>    ax.set_title(especie_nombre, fontsize<span class="op">=</span><span class="dv">11</span>, pad<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb87-49"><a href="#cb87-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-50"><a href="#cb87-50" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Malla</span></span>
-<span id="cb87-51"><a href="#cb87-51" aria-hidden="true" tabindex="-1"></a>    ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.1</span>, color<span class="op">=</span><span class="st">'gray'</span>)</span>
-<span id="cb87-52"><a href="#cb87-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-53"><a href="#cb87-53" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Etiquetas de los ejes</span></span>
-<span id="cb87-54"><a href="#cb87-54" aria-hidden="true" tabindex="-1"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">'both'</span>, labelsize<span class="op">=</span><span class="dv">9</span>)</span>
-<span id="cb87-55"><a href="#cb87-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-56"><a href="#cb87-56" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Dibujar un borde sutil para definir el recuadro de cada gráfica</span></span>
-<span id="cb87-57"><a href="#cb87-57" aria-hidden="true" tabindex="-1"></a>    ax.spines[<span class="st">'left'</span>].set_visible(<span class="va">True</span>)</span>
-<span id="cb87-58"><a href="#cb87-58" aria-hidden="true" tabindex="-1"></a>    ax.spines[<span class="st">'bottom'</span>].set_visible(<span class="va">True</span>)</span>
-<span id="cb87-59"><a href="#cb87-59" aria-hidden="true" tabindex="-1"></a>    ax.spines[<span class="st">'left'</span>].set_color(<span class="st">'gray'</span>)</span>
-<span id="cb87-60"><a href="#cb87-60" aria-hidden="true" tabindex="-1"></a>    ax.spines[<span class="st">'bottom'</span>].set_color(<span class="st">'gray'</span>)</span>
-<span id="cb87-61"><a href="#cb87-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-62"><a href="#cb87-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraemos los límites mínimos y máximos para la escala de 'body'</span></span>
-<span id="cb87-63"><a href="#cb87-63" aria-hidden="true" tabindex="-1"></a>vmin <span class="op">=</span> datos[<span class="st">"body"</span>].<span class="bu">min</span>()</span>
-<span id="cb87-64"><a href="#cb87-64" aria-hidden="true" tabindex="-1"></a>vmax <span class="op">=</span> datos[<span class="st">"body"</span>].<span class="bu">max</span>()</span>
-<span id="cb87-65"><a href="#cb87-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-66"><a href="#cb87-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Agregar una barra de color para la leyenda de 'body'</span></span>
-<span id="cb87-67"><a href="#cb87-67" aria-hidden="true" tabindex="-1"></a>sm <span class="op">=</span> plt.cm.ScalarMappable(cmap<span class="op">=</span><span class="st">"viridis"</span>, norm<span class="op">=</span>plt.Normalize(vmin<span class="op">=</span>vmin, vmax<span class="op">=</span>vmax))</span>
-<span id="cb87-68"><a href="#cb87-68" aria-hidden="true" tabindex="-1"></a>sm.set_array([])</span>
-<span id="cb87-69"><a href="#cb87-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-70"><a href="#cb87-70" aria-hidden="true" tabindex="-1"></a><span class="co"># Posicionar la barra de color</span></span>
-<span id="cb87-71"><a href="#cb87-71" aria-hidden="true" tabindex="-1"></a>cbar <span class="op">=</span> g.fig.colorbar(sm, ax<span class="op">=</span>g.fig.axes, orientation<span class="op">=</span><span class="st">"vertical"</span>, shrink<span class="op">=</span><span class="fl">0.3</span>, pad<span class="op">=</span><span class="fl">0.05</span>)</span>
-<span id="cb87-72"><a href="#cb87-72" aria-hidden="true" tabindex="-1"></a>cbar.set_label(<span class="st">"Puntaje del Cuerpo (Body)"</span>, fontsize<span class="op">=</span><span class="dv">10</span>, labelpad<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb87-73"><a href="#cb87-73" aria-hidden="true" tabindex="-1"></a>cbar.ax.tick_params(labelsize<span class="op">=</span><span class="dv">8</span>)</span>
-<span id="cb87-74"><a href="#cb87-74" aria-hidden="true" tabindex="-1"></a>cbar.outline.set_visible(<span class="va">False</span>)</span>
-<span id="cb87-75"><a href="#cb87-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-76"><a href="#cb87-76" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el lienzo</span></span>
-<span id="cb87-77"><a href="#cb87-77" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-63-1.png" class="img-fluid figure-img" width="542"></p>
-</figure>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparación de datos</span></span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>datos_act10_Py <span class="op">=</span> datos[</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a>    (datos[<span class="st">"aftertaste"</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (datos[<span class="st">"acidity"</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span> (datos[<span class="st">"body"</span>] <span class="op">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb89-4"><a href="#cb89-4" aria-hidden="true" tabindex="-1"></a>][[<span class="st">"aftertaste"</span>, <span class="st">"acidity"</span>, <span class="st">"body"</span>, <span class="st">"species"</span>]]</span>
+<span id="cb89-5"><a href="#cb89-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-6"><a href="#cb89-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Construcción del gráfico</span></span>
+<span id="cb89-7"><a href="#cb89-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-8"><a href="#cb89-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar el estilo del lienzo</span></span>
+<span id="cb89-9"><a href="#cb89-9" aria-hidden="true" tabindex="-1"></a>sns.set_theme(style<span class="op">=</span><span class="st">"whitegrid"</span>, font_scale<span class="op">=</span><span class="fl">1.0</span>, font<span class="op">=</span><span class="st">"sans-serif"</span>)</span>
+<span id="cb89-10"><a href="#cb89-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-11"><a href="#cb89-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear facetas por 'species'</span></span>
+<span id="cb89-12"><a href="#cb89-12" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.FacetGrid(</span>
+<span id="cb89-13"><a href="#cb89-13" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>datos_act10_Py,</span>
+<span id="cb89-14"><a href="#cb89-14" aria-hidden="true" tabindex="-1"></a>    col<span class="op">=</span><span class="st">"species"</span>,</span>
+<span id="cb89-15"><a href="#cb89-15" aria-hidden="true" tabindex="-1"></a>    height<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb89-16"><a href="#cb89-16" aria-hidden="true" tabindex="-1"></a>    aspect<span class="op">=</span><span class="fl">1.1</span>,</span>
+<span id="cb89-17"><a href="#cb89-17" aria-hidden="true" tabindex="-1"></a>    margin_titles<span class="op">=</span><span class="va">True</span></span>
+<span id="cb89-18"><a href="#cb89-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb89-19"><a href="#cb89-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb89-20"><a href="#cb89-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de dispersión entre 'acidity' y 'aftertaste'</span></span>
+<span id="cb89-21"><a href="#cb89-21" aria-hidden="true" tabindex="-1"></a>g.map_dataframe(</span>
+<span id="cb89-22"><a href="#cb89-22" aria-hidden="true" tabindex="-1"></a>    sns.scatterplot,</span>
+<span id="cb89-23"><a href="#cb89-23" aria-hidden="true" tabindex="-1"></a>    x<span class="op">=</span><span class="st">"acidity"</span>,</span>
+<span id="cb89-24"><a href="#cb89-24" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="st">"aftertaste"</span>,</span>
+<span id="cb89-25"><a href="#cb89-25" aria-hidden="true" tabindex="-1"></a>    hue<span class="op">=</span><span class="st">"body"</span>,</span>
+<span id="cb89-26"><a href="#cb89-26" aria-hidden="true" tabindex="-1"></a>    palette<span class="op">=</span><span class="st">"viridis"</span>, <span class="co"># Paleta de color continuo para representar 'body'</span></span>
+<span id="cb89-27"><a href="#cb89-27" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb89-28"><a href="#cb89-28" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">50</span>,</span>
+<span id="cb89-29"><a href="#cb89-29" aria-hidden="true" tabindex="-1"></a>    edgecolor<span class="op">=</span><span class="st">"w"</span>,</span>
+<span id="cb89-30"><a href="#cb89-30" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">0.5</span></span>
+<span id="cb89-31"><a href="#cb89-31" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb90"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Título principal del Canvas</span></span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>g.fig.suptitle(</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Relación entre Acidez, Sabor Residual y Cuerpo por Especie de Café"</span>,</span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">13</span>,</span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>    y<span class="op">=</span><span class="fl">1.05</span></span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Titulos de los ejes</span></span>
+<span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a>g.set_axis_labels(<span class="st">"Puntaje de Acidez (Acidity)"</span>,<span class="st">"Puntaje de Sabor Residual (Aftertaste)"</span>,fontsize<span class="op">=</span><span class="dv">10</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Personalizar cada faceta</span></span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ax <span class="kw">in</span> g.axes.flat:</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Obtener el nombre de la especie del formato automático de Seaborn</span></span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>    especie_nombre <span class="op">=</span> ax.get_title().split(<span class="st">"="</span>)[<span class="op">-</span><span class="dv">1</span>].strip()</span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ajustar títulos de cada faceta</span></span>
+<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a>    ax.set_title(especie_nombre, fontsize<span class="op">=</span><span class="dv">11</span>, pad<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-8"><a href="#cb91-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Malla</span></span>
+<span id="cb91-9"><a href="#cb91-9" aria-hidden="true" tabindex="-1"></a>    ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.1</span>, color<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb91-10"><a href="#cb91-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-11"><a href="#cb91-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Etiquetas de los ejes</span></span>
+<span id="cb91-12"><a href="#cb91-12" aria-hidden="true" tabindex="-1"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">'both'</span>, labelsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb91-13"><a href="#cb91-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-14"><a href="#cb91-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Dibujar un borde sutil para definir el recuadro de cada gráfica</span></span>
+<span id="cb91-15"><a href="#cb91-15" aria-hidden="true" tabindex="-1"></a>    ax.spines[<span class="st">'left'</span>].set_visible(<span class="va">True</span>)</span>
+<span id="cb91-16"><a href="#cb91-16" aria-hidden="true" tabindex="-1"></a>    ax.spines[<span class="st">'bottom'</span>].set_visible(<span class="va">True</span>)</span>
+<span id="cb91-17"><a href="#cb91-17" aria-hidden="true" tabindex="-1"></a>    ax.spines[<span class="st">'left'</span>].set_color(<span class="st">'gray'</span>)</span>
+<span id="cb91-18"><a href="#cb91-18" aria-hidden="true" tabindex="-1"></a>    ax.spines[<span class="st">'bottom'</span>].set_color(<span class="st">'gray'</span>)</span>
+<span id="cb91-19"><a href="#cb91-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-20"><a href="#cb91-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraemos los límites mínimos y máximos para la escala de 'body'</span></span>
+<span id="cb91-21"><a href="#cb91-21" aria-hidden="true" tabindex="-1"></a>vmin <span class="op">=</span> datos[<span class="st">"body"</span>].<span class="bu">min</span>()</span>
+<span id="cb91-22"><a href="#cb91-22" aria-hidden="true" tabindex="-1"></a>vmax <span class="op">=</span> datos[<span class="st">"body"</span>].<span class="bu">max</span>()</span>
+<span id="cb91-23"><a href="#cb91-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-24"><a href="#cb91-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Agregar una barra de color para la leyenda de 'body'</span></span>
+<span id="cb91-25"><a href="#cb91-25" aria-hidden="true" tabindex="-1"></a>sm <span class="op">=</span> plt.cm.ScalarMappable(cmap<span class="op">=</span><span class="st">"viridis"</span>, norm<span class="op">=</span>plt.Normalize(vmin<span class="op">=</span>vmin, vmax<span class="op">=</span>vmax))</span>
+<span id="cb91-26"><a href="#cb91-26" aria-hidden="true" tabindex="-1"></a>sm.set_array([])</span>
+<span id="cb91-27"><a href="#cb91-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-28"><a href="#cb91-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Posicionar la barra de color</span></span>
+<span id="cb91-29"><a href="#cb91-29" aria-hidden="true" tabindex="-1"></a>cbar <span class="op">=</span> g.fig.colorbar(sm, ax<span class="op">=</span>g.fig.axes, orientation<span class="op">=</span><span class="st">"vertical"</span>, shrink<span class="op">=</span><span class="fl">0.3</span>, pad<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb91-30"><a href="#cb91-30" aria-hidden="true" tabindex="-1"></a>cbar.set_label(<span class="st">"Puntaje del Cuerpo (Body)"</span>, fontsize<span class="op">=</span><span class="dv">10</span>, labelpad<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb91-31"><a href="#cb91-31" aria-hidden="true" tabindex="-1"></a>cbar.ax.tick_params(labelsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb91-32"><a href="#cb91-32" aria-hidden="true" tabindex="-1"></a>cbar.outline.set_visible(<span class="va">False</span>)</span>
+<span id="cb91-33"><a href="#cb91-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-34"><a href="#cb91-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Guardar gráfica en un archivo png</span></span>
+<span id="cb91-35"><a href="#cb91-35" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">"actividad10_python.png"</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb91-36"><a href="#cb91-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-63-2.png" class="img-fluid figure-img" width="540"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-63-3.png" class="img-fluid figure-img" width="1056"></p>
-</figure>
-</div>
-</div>
-</div>
+<p><img src="actividad10_python.png" class="img-fluid"></p>
 
 
 </section>
