@@ -1917,12 +1917,12 @@ window.Quarto = {
 <span id="cb112-28"><a href="#cb112-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">END</span> <span class="kw">AS</span> rango_humid</span>
 <span id="cb112-29"><a href="#cb112-29" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> vuelos v</span>
 <span id="cb112-30"><a href="#cb112-30" aria-hidden="true" tabindex="-1"></a><span class="kw">INNER</span> <span class="kw">JOIN</span> clima c</span>
-<span id="cb112-31"><a href="#cb112-31" aria-hidden="true" tabindex="-1"></a>  <span class="kw">ON</span>  v.origin <span class="op">=</span> c.origin</span>
-<span id="cb112-32"><a href="#cb112-32" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> v.time_hour <span class="op">=</span> c.time_hour</span>
+<span id="cb112-31"><a href="#cb112-31" aria-hidden="true" tabindex="-1"></a>    <span class="kw">ON</span>  v.origin <span class="op">=</span> c.origin</span>
+<span id="cb112-32"><a href="#cb112-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">AND</span> v.time_hour <span class="op">=</span> c.time_hour</span>
 <span id="cb112-33"><a href="#cb112-33" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> v.dep_time <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb112-34"><a href="#cb112-34" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> v.arr_time <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb112-35"><a href="#cb112-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> v.air_time <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
-<span id="cb112-36"><a href="#cb112-36" aria-hidden="true" tabindex="-1"></a>  <span class="kw">AND</span> c.humid <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb112-34"><a href="#cb112-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">AND</span> v.arr_time <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb112-35"><a href="#cb112-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">AND</span> v.air_time <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
+<span id="cb112-36"><a href="#cb112-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">AND</span> c.humid <span class="kw">IS</span> <span class="kw">NOT</span> <span class="kw">NULL</span></span>
 <span id="cb112-37"><a href="#cb112-37" aria-hidden="true" tabindex="-1"></a>) <span class="kw">AS</span> n</span>
 <span id="cb112-38"><a href="#cb112-38" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span> n.taxi_out <span class="op">&gt;</span> <span class="dv">0</span></span>
 <span id="cb112-39"><a href="#cb112-39" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> n.rango_humid</span>

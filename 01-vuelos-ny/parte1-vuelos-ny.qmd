@@ -1262,12 +1262,12 @@ SELECT
     END AS rango_humid
 FROM vuelos v
 INNER JOIN clima c
-  ON  v.origin = c.origin
-  AND v.time_hour = c.time_hour
+    ON  v.origin = c.origin
+    AND v.time_hour = c.time_hour
 WHERE v.dep_time IS NOT NULL
-  AND v.arr_time IS NOT NULL
-  AND v.air_time IS NOT NULL
-  AND c.humid IS NOT NULL
+    AND v.arr_time IS NOT NULL
+    AND v.air_time IS NOT NULL
+    AND c.humid IS NOT NULL
 ) AS n
 WHERE n.taxi_out > 0
 GROUP BY n.rango_humid
@@ -1283,7 +1283,6 @@ identical(solucion20_R, solucion20_SQL)
 ```
 
 Gráfico adicional:
-
 
 ```{r}
 ggplot(solucion20_R, aes(x = rango_humid , y = taxi_out_promedio)) +
