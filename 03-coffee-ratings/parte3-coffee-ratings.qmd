@@ -700,19 +700,27 @@ En conclusión, hay 1,333 observaciones en la columna `harvest_year` que generan
 Elabore una visualización con `ggplot2` que identifique alguna relación entre las columnas total_cup_points, acidity y color2 de tal forma que se puedan identificar los colores de la variable color2. Es decir, debemos ver los colores, "#00FF66", "#CCEBC5" y "#BFFFFF".
 
 ```{r}
-ggplot(datos, aes(x = acidity, y = total_cup_points, color = color2)) +
+datos %>%
+  dplyr::filter(!is.na(color2) & acidity != 0 & total_cup_points != 0) %>%
+  ggplot(aes(x = acidity,
+           y = total_cup_points,
+           color = color2)) +
+
   geom_point(size = 1.5, alpha = 2) +
+
   scale_color_identity(
     guide = "legend",
     labels = c("Green", "Bluish-green", "Blue-green"),
     breaks = c("#00FF66", "#CCEBC5", "#BFFFFF"),
     name = "Color"
   ) +
+
   labs(
-    title = "Relación entre Acidity y Total Cup Points", 
-    x = "Acidity", 
+    title = "Relación entre Acidity y Total Cup Points",
+    x = "Acidity",
     y = "Total Cup Points"
   ) +
+
   theme_minimal()
 ```
 
@@ -731,7 +739,10 @@ No obstante, respecto a la variable `color2`, se observa un claro predominio de 
 ```{python}
 import matplotlib.patches as mpatches
 
-datos2 = datos.dropna(subset=['color2'])
+# Preparación de datos
+datos2 = datos[
+    (datos["total_cup_points"] > 0) & (datos["acidity"] > 0) & (~datos["color2"].isna())
+][["total_cup_points", "acidity", "color2"]]
 
 plt.figure(figsize=(8,6))
 plt.scatter(
@@ -757,7 +768,6 @@ plt.grid(False)
 plt.tight_layout()
 
 plt.show()
-plt.close()
 ```
 
 ```{python}
@@ -1255,8 +1265,8 @@ for ax in g.axes.flat:
     ax.tick_params(axis="x", rotation=90)
     
 plt.show()
-plt.close()
 ```
+
 
 # Actividad 10
 
@@ -1404,6 +1414,5 @@ cbar.outline.set_visible(False)
 
 # Mostrar el lienzo
 plt.show()
-plt.close()
 ```
 
