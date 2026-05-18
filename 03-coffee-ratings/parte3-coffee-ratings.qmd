@@ -564,7 +564,7 @@ datos <- datos %>%
 Visualización de las nuevas columnas:
 
 ```{r}
-datos %>% distinct(harvest_year, harvest_anio, harvest_mes) %>% head()
+datos %>% distinct(harvest_year, harvest_anio, harvest_mes)
 ```
 
 ¿Cuántas observaciones llevaron a ambigüedad para crear estas nuevas columnas?
@@ -675,10 +675,14 @@ mes_corto_cap = mes_corto.str.capitalize()
 datos["harvest_mes"] = mes_corto_cap.map(mapa_meses).astype("object")
 ```
 
-Vistazo a las nuevas columnas
+Resultado de lo hecho en Python:
 
 ```{python}
-datos[["harvest_year", "harvest_anio", "harvest_mes"]].drop_duplicates().head(10)
+harvest_python = datos[["harvest_year", "harvest_anio", "harvest_mes"]].drop_duplicates()
+```
+
+```{r}
+py$harvest_python
 ```
 
 **¿Cuántas observaciones llevaron a ambigüedad para crear estas nuevas columnas?**

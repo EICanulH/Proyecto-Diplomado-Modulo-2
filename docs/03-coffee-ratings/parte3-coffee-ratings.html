@@ -479,8 +479,8 @@ code.sourceCode.python::before{content:'Python'; float:right}
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> make_interp_spline</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>plt.ioff()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;contextlib.ExitStack object at 0x0000027BAA1C0050&gt;
-&lt;contextlib.ExitStack object at 0x0000027BAD034B90&gt;</code></pre>
+<pre><code>&lt;contextlib.ExitStack object at 0x0000024AFB930050&gt;
+&lt;contextlib.ExitStack object at 0x0000024AFE728E10&gt;</code></pre>
 </div>
 </div>
 <p>Se usará el conjunto de datos de encuesta de café <code>coffee_ratings.csv</code></p>
@@ -1088,11 +1088,11 @@ Semi-washed / Semi-pulped    Semi-washed Semi-pulped
 </div>
 <p>Visualización de las nuevas columnas:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(harvest_year, harvest_anio, harvest_mes) <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>datos <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(harvest_year, harvest_anio, harvest_mes)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["harvest_year"],"name":[1],"type":["chr"],"align":["left"]},{"label":["harvest_anio"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["harvest_mes"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"2014","2":"2014","3":"NA"},{"1":"NA","2":"NA","3":"NA"},{"1":"2013","2":"2013","3":"NA"},{"1":"2012","2":"2012","3":"NA"},{"1":"March 2010","2":"2010","3":"March"},{"1":"Sept 2009 - April 2010","2":"2009","3":"September"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["harvest_year"],"name":[1],"type":["chr"],"align":["left"]},{"label":["harvest_anio"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["harvest_mes"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"2014","2":"2014","3":"NA"},{"1":"NA","2":"NA","3":"NA"},{"1":"2013","2":"2013","3":"NA"},{"1":"2012","2":"2012","3":"NA"},{"1":"March 2010","2":"2010","3":"March"},{"1":"Sept 2009 - April 2010","2":"2009","3":"September"},{"1":"May-August","2":"NA","3":"May"},{"1":"2009/2010","2":"2009","3":"NA"},{"1":"2015","2":"2015","3":"NA"},{"1":"2011","2":"2011","3":"NA"},{"1":"2016","2":"2016","3":"NA"},{"1":"2015/2016","2":"2015","3":"NA"},{"1":"2010","2":"2010","3":"NA"},{"1":"Fall 2009","2":"2009","3":"NA"},{"1":"2017","2":"2017","3":"NA"},{"1":"2009 / 2010","2":"2009","3":"NA"},{"1":"2010-2011","2":"2010","3":"NA"},{"1":"2009-2010","2":"2009","3":"NA"},{"1":"2009 - 2010","2":"2009","3":"NA"},{"1":"2013/2014","2":"2013","3":"NA"},{"1":"2017 / 2018","2":"2017","3":"NA"},{"1":"mmm","2":"NA","3":"NA"},{"1":"TEST","2":"NA","3":"NA"},{"1":"December 2009-March 2010","2":"2009","3":"December"},{"1":"2014/2015","2":"2014","3":"NA"},{"1":"2011/2012","2":"2011","3":"NA"},{"1":"January 2011","2":"2011","3":"January"},{"1":"4T/10","2":"2010","3":"NA"},{"1":"2016 / 2017","2":"2016","3":"NA"},{"1":"23 July 2010","2":"2010","3":"July"},{"1":"January Through April","2":"NA","3":"January"},{"1":"1T/2011","2":"2011","3":"NA"},{"1":"4t/2010","2":"2010","3":"NA"},{"1":"4T/2010","2":"2010","3":"NA"},{"1":"August to December","2":"NA","3":"August"},{"1":"Mayo a Julio","2":"NA","3":"May"},{"1":"47/2010","2":"2010","3":"NA"},{"1":"Abril - Julio","2":"NA","3":"April"},{"1":"4t/2011","2":"2011","3":"NA"},{"1":"Abril - Julio /2011","2":"2011","3":"April"},{"1":"Spring 2011 in Colombia.","2":"2011","3":"NA"},{"1":"3T/2011","2":"2011","3":"NA"},{"1":"2016/2017","2":"2016","3":"NA"},{"1":"1t/2011","2":"2011","3":"NA"},{"1":"2018","2":"2018","3":"NA"},{"1":"4T72010","2":"2010","3":"NA"},{"1":"08/09 crop","2":"2008","3":"NA"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -1209,21 +1209,18 @@ tipos: 47</code></pre>
 <span id="cb64-46"><a href="#cb64-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir el mes corto a mes completo usando el diccionario (los no encontrados quedan como NaN)</span></span>
 <span id="cb64-47"><a href="#cb64-47" aria-hidden="true" tabindex="-1"></a>datos[<span class="st">"harvest_mes"</span>] <span class="op">=</span> mes_corto_cap.<span class="bu">map</span>(mapa_meses).astype(<span class="st">"object"</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Vistazo a las nuevas columnas</p>
+<p>Resultado de lo hecho en Python:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>datos[[<span class="st">"harvest_year"</span>, <span class="st">"harvest_anio"</span>, <span class="st">"harvest_mes"</span>]].drop_duplicates().head(<span class="dv">10</span>)</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>              harvest_year harvest_anio harvest_mes
-0                     2014         2014         NaN
-2                      NaN          NaN         NaN
-5                     2013         2013         NaN
-6                     2012         2012         NaN
-7               March 2010         2010       March
-13  Sept 2009 - April 2010         2009   September
-16              May-August          NaN         May
-17               2009/2010         2009         NaN
-18                    2015         2015         NaN
-25                    2011         2011         NaN</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>harvest_python <span class="op">=</span> datos[[<span class="st">"harvest_year"</span>, <span class="st">"harvest_anio"</span>, <span class="st">"harvest_mes"</span>]].drop_duplicates()</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>py<span class="sc">$</span>harvest_python</span></code></pre></div><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["harvest_year"],"name":[1],"type":["chr"],"align":["left"]},{"label":["harvest_anio"],"name":[2],"type":["chr"],"align":["left"]},{"label":["harvest_mes"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"2014","2":"2014","3":"NA","_rn_":"0"},{"1":"NA","2":"NA","3":"NA","_rn_":"2"},{"1":"2013","2":"2013","3":"NA","_rn_":"5"},{"1":"2012","2":"2012","3":"NA","_rn_":"6"},{"1":"March 2010","2":"2010","3":"March","_rn_":"7"},{"1":"Sept 2009 - April 2010","2":"2009","3":"September","_rn_":"13"},{"1":"May-August","2":"NA","3":"May","_rn_":"16"},{"1":"2009/2010","2":"2009","3":"NA","_rn_":"17"},{"1":"2015","2":"2015","3":"NA","_rn_":"18"},{"1":"2011","2":"2011","3":"NA","_rn_":"25"},{"1":"2016","2":"2016","3":"NA","_rn_":"28"},{"1":"2015/2016","2":"2015","3":"NA","_rn_":"33"},{"1":"2010","2":"2010","3":"NA","_rn_":"37"},{"1":"Fall 2009","2":"2009","3":"NA","_rn_":"51"},{"1":"2017","2":"2017","3":"NA","_rn_":"55"},{"1":"2009 / 2010","2":"2009","3":"NA","_rn_":"74"},{"1":"2010-2011","2":"2010","3":"NA","_rn_":"93"},{"1":"2009-2010","2":"2009","3":"NA","_rn_":"114"},{"1":"2009 - 2010","2":"2009","3":"NA","_rn_":"124"},{"1":"2013/2014","2":"2013","3":"NA","_rn_":"135"},{"1":"2017 / 2018","2":"2017","3":"NA","_rn_":"158"},{"1":"mmm","2":"NA","3":"NA","_rn_":"169"},{"1":"TEST","2":"NA","3":"NA","_rn_":"170"},{"1":"December 2009-March 2010","2":"2009","3":"December","_rn_":"190"},{"1":"2014/2015","2":"2014","3":"NA","_rn_":"222"},{"1":"2011/2012","2":"2011","3":"NA","_rn_":"291"},{"1":"January 2011","2":"2011","3":"January","_rn_":"311"},{"1":"4T/10","2":"2010","3":"NA","_rn_":"312"},{"1":"2016 / 2017","2":"2016","3":"NA","_rn_":"352"},{"1":"23 July 2010","2":"2010","3":"July","_rn_":"374"},{"1":"January Through April","2":"NA","3":"January","_rn_":"395"},{"1":"1T/2011","2":"2011","3":"NA","_rn_":"437"},{"1":"4t/2010","2":"2010","3":"NA","_rn_":"438"},{"1":"4T/2010","2":"2010","3":"NA","_rn_":"439"},{"1":"August to December","2":"NA","3":"August","_rn_":"477"},{"1":"Mayo a Julio","2":"NA","3":"May","_rn_":"492"},{"1":"47/2010","2":"2010","3":"NA","_rn_":"493"},{"1":"Abril - Julio","2":"NA","3":"April","_rn_":"527"},{"1":"4t/2011","2":"2011","3":"NA","_rn_":"530"},{"1":"Abril - Julio /2011","2":"2011","3":"April","_rn_":"557"},{"1":"Spring 2011 in Colombia.","2":"2011","3":"NA","_rn_":"628"},{"1":"3T/2011","2":"2011","3":"NA","_rn_":"704"},{"1":"2016/2017","2":"2016","3":"NA","_rn_":"735"},{"1":"1t/2011","2":"2011","3":"NA","_rn_":"857"},{"1":"2018","2":"2018","3":"NA","_rn_":"895"},{"1":"4T72010","2":"2010","3":"NA","_rn_":"948"},{"1":"08/09 crop","2":"2008","3":"NA","_rn_":"1191"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
 </div>
 </div>
 <p><strong>¿Cuántas observaciones llevaron a ambigüedad para crear estas nuevas columnas?</strong></p>
@@ -1279,7 +1276,7 @@ tipos: 47</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-49-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-50-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1329,7 +1326,7 @@ tipos: 47</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-51-1.png" class="img-fluid figure-img" width="768"></p>
+<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-52-1.png" class="img-fluid figure-img" width="768"></p>
 </figure>
 </div>
 </div>
@@ -1380,7 +1377,7 @@ acidity                   0.797024  1.000000</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-54-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1404,7 +1401,7 @@ acidity                   0.797024  1.000000</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-55-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-56-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1516,7 +1513,7 @@ acidity                   0.797024  1.000000</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-57-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-58-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1647,7 +1644,7 @@ Conteo por país:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid figure-img" width="1536"></p>
+<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-60-1.png" class="img-fluid figure-img" width="1536"></p>
 </figure>
 </div>
 </div>
@@ -1737,7 +1734,7 @@ Conteo por país:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-61-1.png" class="img-fluid figure-img" width="960"></p>
+<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-62-1.png" class="img-fluid figure-img" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1939,7 +1936,7 @@ Conteo por país:
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-65-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="parte3-coffee-ratings_files/figure-html/unnamed-chunk-66-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
