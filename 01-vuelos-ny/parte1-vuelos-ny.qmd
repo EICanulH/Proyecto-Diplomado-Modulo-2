@@ -270,6 +270,7 @@ solucion03_R
 Gráfico adicional:
 
 ```{r}
+#| fig-width: 12
 vuelos |>
   filter(dep_delay > 0) |>
   ggplot(aes(dep_delay)) +
@@ -477,6 +478,7 @@ identical(solucion07_R, solucion07_SQL)
 Visualización con ggplot2:
 
 ```{r}
+#| fig-width: 12
 # Preparamos los datos
 figura07_R <- vuelos %>%
   inner_join(aviones, by = "tailnum") %>%
